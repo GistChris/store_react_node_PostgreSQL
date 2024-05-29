@@ -9,12 +9,17 @@
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "mobx": "^6.12.3",
+    "mobx-persist": "^0.4.1",
+    "mobx-react": "^9.1.1",
+    "mobx-react-form": "^6.9.4",
     "mobx-react-lite": "^4.0.7",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "5.0.1",
+    "valid-url": "^1.0.9",
+    "validatorjs": "^3.22.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

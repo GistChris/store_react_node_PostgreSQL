@@ -1,0 +1,110 @@
+import { makeAutoObservable } from "mobx";
+
+export default class DeviceStore {
+  constructor() {
+    this._types = [
+      { id: 1, name: "frigidaires" },
+      { id: 2, name: "cellulaires" },
+      { id: 3, name: "tv" },
+      { id: 4, name: "laptop" },
+    ];
+    this._brands = [
+      { id: 1, name: "APPLE" },
+      { id: 2, name: "SAMSUNG" },
+      { id: 3, name: "Xiaomi" },
+      { id: 4, name: "Lenovo" },
+   
+    ];
+    this._devices = [
+      {
+        id: 1,
+        name: "SAMSUNG Galaxy 20",
+        price: 500,
+        rating: 4,
+        img: "https://gsm-store.ru/upload/medialibrary/a5a/tnua9yh9cmw6u7h78phr1g8wmou5ggvc.jpg",
+      },
+      {
+        id: 2,
+        name: "SAMSUNG Galaxy s24 ultra",
+        price: 1500,
+        rating: 5,
+        img: "https://i.ytimg.com/vi/_yxdnfcr8js/maxresdefault.jpg?7857057827",
+      },
+      {
+        id: 3,
+        name: "SAMSUNG Galaxy a52",
+        price: 460,
+        rating: 3,
+        img: "https://avshop.ru/images/upload/9b5/9b51a2f7df23347af1c079d4a3b50c41.webp",
+      },
+      {
+        id: 4,
+        name: "IPHONE 15 pro",
+        price: 2300,
+        rating: 5,
+        img: "https://www.theapplepost.com/wp-content/uploads/2023/02/4B3DE31A-E802-409E-91E5-31313A43C3E1.jpg",
+      },
+      {
+        id: 5,
+        name: "IPHONE 15 promax",
+        price: 5000,
+        rating: 4,
+        img: "https://i.ytimg.com/vi/j9l98h5wiLc/maxresdefault.jpg",
+      },
+      {
+        id: 6,
+        name: "Xiaomi 14 Ultra",
+        price: 3125,
+        rating: 5,
+        img: "https://i.ytimg.com/vi/1CKy1wTcRZQ/maxresdefault.jpg",
+      },
+      {
+        id: 7,
+        name: "IPHONE 15 promax",
+        price: 5002133540,
+        rating: 4,
+        img: "https://i.ytimg.com/vi/j9l98h5wiLc/maxresdefault.jpg",
+      },
+      {
+        id: 8,
+        name: "Xiaomi 14 Ultra",
+        price: 312515515,
+        rating: 5,
+        img: "https://i.ytimg.com/vi/1CKy1wTcRZQ/maxresdefault.jpg",
+      },
+    ];
+    this._selectedType = {};
+    this._selectedBrand = {};
+    makeAutoObservable(this);
+  }
+  setTypes(types) {
+    this._types = types;
+  }
+  setBrands(brands) {
+    this._brands = brands;
+  }
+  setDevices(devices) {
+    this._devices = devices;
+  }
+  setSelectedType(type) {
+    this._selectedType = type;
+  }
+  setSelectedBrand(brand) {
+    this._selectedBrand = brand;
+  }
+  get types() {
+    return this._types;
+  }
+  get brands() {
+    return this._brands;
+  }
+  get devices() {
+    return this._devices;
+  }
+  get selectedType() {
+    return this._selectedType;
+  }
+  get selectedBrand() {
+    return this._selectedBrand;
+  }
+}

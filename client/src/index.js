@@ -1,14 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { createContext } from "react";
+import ReactDOM from "react-dom/client";
+import UserStore from "./store/UserStore";
 // import './index.css';
-import App from './App';
+import App from "./App";
+import DeviceStore from "./store/DeviceStore";
 // import reportWebVitals from './reportWebVitals';
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+export const Context = createContext(null);
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // <React.StrictMode>
+  <Context.Provider
+    value={{
+      user: new UserStore(),
+      device: new DeviceStore(),
+    }}
+  >
     <App />
-  // </React.StrictMode>
+  </Context.Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
