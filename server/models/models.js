@@ -1,16 +1,16 @@
-const sequelize = require("../db");
-const { DataTypes } = require("sequelize");
+const sequelize = require('../db');
+const { DataTypes } = require('sequelize');
 
-const User = sequelize.define("user", {
+const User = sequelize.define('user', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  email: { type: DataTypes.STRING, unique: true },
+  email: { type: DataTypes.STRING, unique: true, },
   password: { type: DataTypes.STRING },
   role: { type: DataTypes.STRING, defaultValue: "USER" },
 });
-const Basket = sequelize.define("bascket", {
+const Basket = sequelize.define("basket", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
 });
-const BasketDevice = sequelize.define("bascket_device", {
+const BasketDevice = sequelize.define("basket_device", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
 });
 const Device = sequelize.define("device", {
@@ -38,7 +38,7 @@ const DeviceInfo = sequelize.define("device_info", {
   description: { type: DataTypes.STRING, allowNull: false },
 });
 
-const TypeBrand = sequelize.define("type_brand", {
+const TypeBrand = sequelize.define('type_brand', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
 });
 
