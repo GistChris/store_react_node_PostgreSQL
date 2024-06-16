@@ -10,6 +10,8 @@ const router = require('./routes/index');
 const path = require('path');
 //esli PORT ne zadan to po umolchaniu 5000
 const PORT = process.env.PORT || 5001;
+console.log(PORT)
+console.log(process.env)
 // const PORT =  5001;
 // console.log(" process.env.PORT", process.env.PORT)
 const errorHandler = require('./middleware/ErrorHandlingMiddleware');

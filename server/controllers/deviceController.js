@@ -21,22 +21,27 @@ class DeviceController {
         img: fileName,
       });
       if (info) {
+        console.log("info", info); 
         //na fronte budem parsit v json stroku, a backe budem peregonian v javascript objects
         info = JSON.parse(info);
         info.forEach((i) =>
           DeviceInfo.create({
             title: i.title,
             description: i.description,
-            deviceId: device.id,
-            // deviceId: i.deviceId,
+            // deviceId: device.id,
+            // id: i.number,
+            
           })
+          
         );
       }
-   
-      // console.log("deVICE", device);
+      console.log("deVICE");
+      console.log("deVICE", device);
+      // console.log("deVICE", json(device));
       //posle sozdania device peredaem informatsiu na klienta
       return res.json(device);
     } catch (e) {
+      console.log("BBBBBBBBBBBBAAAAAAAAADDDDDDDDDdeVICE");
       next(ApiError.badRequest(e.message));
     }
   }
