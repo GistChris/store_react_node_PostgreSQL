@@ -23,6 +23,7 @@ export const publicRoutes=[
     {
         path:LOGIN_ROUTER,
         Component: Auth
+        
     }, 
     {
         path:REGISTRATION_ROUTER,

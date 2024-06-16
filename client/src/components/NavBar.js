@@ -19,6 +19,13 @@ const NavBar = observer(() => {
   // const NavBar =() => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
+  const logOut = () => {
+    //pererenderivaetsia tolko navbar
+    user.setUser({});
+    user.setIsAuth(false);
+//eto moe perecliuchenie
+    // navigate(LOGIN_ROUTER)
+  };
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
@@ -27,22 +34,27 @@ const NavBar = observer(() => {
         </NavLink>
         {user.isAuth ? (
           <Nav className="ml-auto" style={{ color: "white" }}>
-            <Button variant={"outline-light"} onClick={() => navigate(ADMIN_ROUTER)}>
+            <Button
+              variant={"outline-light"}
+              onClick={() => navigate(ADMIN_ROUTER)}
+            >
               Admin panel
             </Button>
             <Button
               variant={"outline-light"}
-              onClick={() => navigate(LOGIN_ROUTER)}
+              // onClick={() => navigate(LOGIN_ROUTER)}
+              onClick={() => logOut()}
               className="ml-2"
             >
-             Exit
+              Exit
             </Button>
           </Nav>
         ) : (
           <Nav className="ml-auto" style={{ color: "white" }}>
             <Button
               variant={"outline-light"}
-              onClick={() => user.setIsAuth(true)}
+              // onClick={() => user.setIsAuth(true)}
+              onClick={() => navigate(LOGIN_ROUTER)}
             >
               SignIn
             </Button>
