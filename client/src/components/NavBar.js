@@ -1,6 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../index";
 import Navbar from "react-bootstrap/Navbar";
+import { BsFillBasket3Fill } from "react-icons/bs";
+import { BsFillCartCheckFill } from "react-icons/bs";
+import { Bs0Circle } from "react-icons/bs";
+
 import Form from "react-bootstrap/Form";
 // import Button from 'react-bootstrap/Button';
 import InputGroup from "react-bootstrap/InputGroup";
@@ -10,12 +14,13 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
-import { ADMIN_ROUTER, LOGIN_ROUTER, SHOP_ROUTER } from "../utils/consts";
+import { ADMIN_ROUTER, BASKET_ROUTER, LOGIN_ROUTER, SHOP_ROUTER } from "../utils/consts";
 // import { observer } from "mobx-react-light";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
 //observer dlia pererendinga v rezhime realnogo vremeni
 const NavBar = observer(() => {
+  let [cartOpen,setCartOpen]=useState(false)
   // const NavBar =() => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
@@ -27,13 +32,32 @@ const NavBar = observer(() => {
     // navigate(LOGIN_ROUTER)
   };
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar bg="dark" variant="dark" className="navbar">
+      {/* <Navbar bg="dark" variant="dark"> */}
       <Container>
         <NavLink style={{ color: "white" }} to={SHOP_ROUTER}>
           BuyDevice
         </NavLink>
+        <BsFillCartCheckFill onClick={()=>setCartOpen(cartOpen=!cartOpen)} className={`cart ${cartOpen &&'active'}`} color="white" cursor="pointer" />
+        {/* <BsFillBasket3Fill className="BsFillBasket2Fill"/> */}
         {user.isAuth ? (
-          <Nav className="ml-auto" style={{ color: "white" }}>
+          <Nav className="ml-auto gap-4" style={{ color: "white" }}>
+        
+            <Button
+             type="button" 
+             className="btn btn-default btn-sm"
+             onClick={() => navigate(BASKET_ROUTER)}
+             >
+                <b> Add to Cart </b>
+            </Button>
+               <Button
+              variant={"outline-light"}
+              // onClick={() => navigate(LOGIN_ROUTER)}
+              onClick={() => logOut()}
+              className="ml-2"
+            >
+              basket
+            </Button>
             <Button
               variant={"outline-light"}
               onClick={() => navigate(ADMIN_ROUTER)}
@@ -48,6 +72,7 @@ const NavBar = observer(() => {
             >
               Exit
             </Button>
+        
           </Nav>
         ) : (
           <Nav className="ml-auto" style={{ color: "white" }}>
@@ -58,12 +83,15 @@ const NavBar = observer(() => {
             >
               SignIn
             </Button>
-            {/* <Button variant={"outline-light"}>Admin panel</Button>
-      <Button variant={"outline-light"}>SignIn</Button> */}
+            {/* <Button variant={"outline-light"}>Admin panel</Button> */}
+      {/* <Button variant={"outline-light"}>SignIn</Button> */}
           </Nav>
         )}
       </Container>
+  
     </Navbar>
+
+  
     //     <Navbar bg="dark" data-bs-theme="dark">
     //     <Container>
     //       <Navbar.Brand href="#home">Navbar</Navbar.Brand>
@@ -112,6 +140,13 @@ const NavBar = observer(() => {
     //   </Navbar>
   );
   // };
+  // <style>
+  //     .cart {
+  //       color:white;
+  //     }
+  // </style>
 });
+{/* <style>
 
+</style> */}
 export default NavBar;

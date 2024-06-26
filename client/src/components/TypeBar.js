@@ -7,7 +7,7 @@ import { Context } from "../index";
 // observec chto by mobx otslezhival vse izmenenia
 const TypeBar = observer(() => {
   const { device } = useContext(Context);
-  console.log("Devicetype", device.types);
+  // console.log("Devicetype", device.types);
   return (
     <ListGroup>
       {device.types.map((type) => (

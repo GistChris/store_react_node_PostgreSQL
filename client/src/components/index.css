@@ -1,0 +1,12 @@
+
+.cart{
+    float:right;
+    cursor:pointer;
+    transition: color 500ms ease;
+    font-size: large;
+  
+  }
+  .cart:hover,
+  .cart.active{
+    color:#dc3d3d;
+  }

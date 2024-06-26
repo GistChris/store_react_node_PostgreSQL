@@ -7,16 +7,27 @@ import Button from "react-bootstrap/Button";
 //nook useParams dlia poiska id na servere useParams
 import { useParams } from "react-router-dom";
 import { fetchOneDevice } from "../http/deviceApi";
+import { itemToCart } from "../http/basketApi";
+import CreateRating from "../components/modals/CreateRating";
 const DevicePage = () => {
-  
   //useState dlia sozdania localnogo sostoiania
   const [device, setDevice] = useState({ info: [] });
-  const {id} = useParams();
-  console.log("params.id", id);
+  // const [device, setDevice] = useState({});
+  const [ratingVisible, setRatingVisible] = useState(false);
+  const { id } = useParams();
+  //idiz paramentrov stroki
+  // console.log("params.id", id);
   //useEffect pri otkrytii stranitsy kazhdyi raz edinozhdy dolzhny podgrouzhat
   useEffect(() => {
-    fetchOneDevice(id).then(data => setDevice(data)) },[]);
-    // fetchOneDevice(id).then(data => setDevice(data)) },[id]);
+    fetchOneDevice(id).then((data) => setDevice(data));
+    // console.log("USEEFFECTdevice",device.info[0].id)
+  }, []);
+  // const addToCart = () => {
+  //   itemToCart(device);
+  //   console.log("DEVICE", device);
+  //   return;
+  // };
+  // fetchOneDevice(id).then(data => setDevice(data)) },[id]);
 
   // const device = {
   //   id: 5,
@@ -36,11 +47,18 @@ const DevicePage = () => {
     <Container className="mt-3">
       <Row>
         <Col md={4}>
-          <Image width={300} height={300} src={process.env.REACT_APP_API_URL + device.img} />
+          <Image
+            width={300}
+            height={300}
+            src={process.env.REACT_APP_API_URL + device.img}
+          />
         </Col>
         <Col md={4}>
           <Row className="d-flex flex-column align-items-center">
             <h2>{device.name}</h2>
+            <h2>{device.id}</h2>
+            {/* <h2>device.info:{device.info[0].id}</h2> */}
+            <h2>{device.typeId}</h2>
             <div
               className="d-flex align-items-center justify-content-center"
               style={{
@@ -51,8 +69,19 @@ const DevicePage = () => {
                 fontSize: 64,
               }}
             >
-              {device.rating}
+           {device.rating} 
             </div>
+            <Button
+              variant={"outline-dark"}
+              className="mt-4 p-2"
+              onClick={() => setRatingVisible(true)}
+            >
+              Add rating
+            </Button>
+            <CreateRating
+              show={ratingVisible}
+              onHide={() => setRatingVisible(false)}
+            />
           </Row>
         </Col>
         <Col md={4}>
@@ -66,13 +95,16 @@ const DevicePage = () => {
             }}
           >
             <h3>From:{device.price} cad.</h3>
-            <Button variant={"outline-dark"}>Add to basket</Button>
+            {/* <Button variant={"outline-dark"} onClick={addToCart()}> */}
+            <Button variant={"outline-dark"} >
+              Add to Cart
+            </Button>
           </Card>
         </Col>
       </Row>
       <Row className="d-flex flex-column m-3">
         <h1>Specifications</h1>
-        {/* {description.map((info, index) => ( */}
+
         {device.info.map((info, index) => (
           <Row
             key={info.id}

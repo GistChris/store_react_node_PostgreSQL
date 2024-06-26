@@ -1,9 +1,11 @@
 import { makeAutoObservable } from "mobx";
 
- export default class DeviceStore {
+ export default class BasketStore {
 //globalnoe khranilitshe i v lubom meste prilozhenia mozhno poluchat is nego dannye
   constructor() {
-    this._ratings=[];
+    // this._basket=[];
+    this._baskets=[];
+    // this._ratings=[];
     // this._types = [
     //   { id: 1, name: "frigidaires" },
     //   { id: 2, name: "cellulaires" },
@@ -11,7 +13,7 @@ import { makeAutoObservable } from "mobx";
     //   { id: 4, name: "laptop" },
     // ];
     /////////////////////
-    this._types = [];
+    // this._types = [];
     ////////////////////
     // this._brands = [
     //   { id: 1, name: "APPLE" },
@@ -20,7 +22,7 @@ import { makeAutoObservable } from "mobx";
     //   { id: 4, name: "Lenovo" },
     // ];
     ////////////////////////////
-    this._brands = [];
+    // this._brands = [];
     ////////////////////////////////
     this._devices = [];
     ////////////////////////
@@ -95,7 +97,9 @@ import { makeAutoObservable } from "mobx";
     this._limit = 3;
     makeAutoObservable(this);
   }
-  
+  setBaskets(baskets) {
+    this._baskets = baskets;
+  }
   setRatings(ratings) {
     this._ratings = ratings;
   }
@@ -121,6 +125,9 @@ import { makeAutoObservable } from "mobx";
   }
   setTotalCount(count) {
     this._totalCount = count;
+  }
+  get baskets() {
+    return this._baskets;
   }
   get ratings() {
     return this._ratings;

@@ -7,7 +7,7 @@ const Pages = observer(() => {
   const { device } = useContext(Context);
   const pages = [];
   const pageCount = Math.ceil(device.totalCount /device.limit);
-  console.log("pageCount=",pageCount)
+  // console.log("pageCount=",pageCount)
   for (let index = 0; index < pageCount; index++) {
     pages.push(index + 1);
   }

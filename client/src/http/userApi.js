@@ -33,12 +33,12 @@ export const check = async () => {
   localStorage.setItem('token', data.token);
   return jwtDecode(data.token);
 };
-// export const check = async () => {
-//   console.log("$authHosttt",$authHost)
-//  const authHost="http//localhost:5000/"
+// export const currentUser = async () => {
 //   const {data} = await $authHost.get("api/user/auth");
-//   // const {data} = await $authHost.get("api/user/auth");
-//   // console.log("$authHosttt",$authHost)
-//   localStorage.setItem("token", data.token);
-//   return jwtDecode(data.token);
+//   console.log("DATAUSERFROMSERVER",data)
+//   // localStorage.setItem('token', data.token);
+//   console.log("jwtDecode(data.token).id",jwtDecode(data.token).id)
+//   const user=jwtDecode(data.token)
+//   return user;
 // };
+

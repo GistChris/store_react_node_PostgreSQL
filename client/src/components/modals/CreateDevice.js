@@ -1,15 +1,21 @@
 import React, { useContext, useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { Dropdown, Form, Row, Col } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import Dropdown from "react-bootstrap/Dropdown";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+// import { Dropdown, Row, Col } from "react-bootstrap";
 import { Context } from "../../index";
 import { fetchTypes, fetchBrands } from "../../http/deviceApi";
 import { observer } from "mobx-react-lite";
 import { createDevice } from "../../http/deviceApi";
+
 //observer chto-by my srasu mogli typy vybirat i videt rerendering
 const CreateDevice = observer(({ show, onHide }) => {
   // const CreateDevice = ({ show, onHide }) => {
   const { device } = useContext(Context);
+
   const [name, setName] = useState(" ");
   const [price, setPrice] = useState(0);
   const [file, setFile] = useState(null);
@@ -30,7 +36,7 @@ const CreateDevice = observer(({ show, onHide }) => {
     // key eto libo title libo description, number- nomer kharakteristiki
     //  po kotoroi znachenie budem izmeniat
     setInfo(
-      //esli number v massive info sovpadaet s nomerom elementa itteratsii ,to 
+      //esli number v massive info sovpadaet s nomerom elementa itteratsii ,to
       // togda my vozratshaem novyi obiect, razvorachivaem v nego kharacteristiku
       // po kluchu zameniaem u nee pole
       //to est esli kliuch byl title to my zameniaem na novoe znachenie, esli
@@ -53,21 +59,27 @@ const CreateDevice = observer(({ show, onHide }) => {
     //znachenie dolzhno byt libo string libo blob - nabor bitov
     //v dannom sluchae mozhem otpravliat file
     //poetomy price converted in string
-    formData.append('price', `${price}`);
-    formData.append('img', file);
-    formData.append('brandId', device.selectedBrand.id);
-    formData.append('typeId', device.selectedType.id);
+    formData.append("price", `${price}`);
+    formData.append("img", file);
+    formData.append("brandId", device.selectedBrand.id);
+    formData.append("typeId", device.selectedType.id);
     //nevozmozhno peredat obiect na backend ,poetomy massiv peregoniaem s pomotshiu
-    //JSON.stringify(info) v stroku libo BLO'
-    formData.append('info', JSON.stringify(info));
+    //JSON.stringify(info) v stroku libo BLOb'
+    formData.append("info", JSON.stringify(info));
     //a na servere json stroka budet parsitsia obratno v massiv
     //esli zapros proshel uspeshno zakryvaem modalnoe pkno
     createDevice(formData).then((data) => onHide());
-    console.log("formData",formData)
-    console.log(77777777)
+    // console.log("formData",formData)
+    // console.log(77777777)
   };
   return (
-    <Modal show={show} onHide={onHide} size="lg" centered>
+    
+    <Modal
+      show={show}
+      onHide={onHide}
+      size="lg"
+      centered
+    >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           Add new device
@@ -75,7 +87,7 @@ const CreateDevice = observer(({ show, onHide }) => {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Dropdown className="mt-2 mb-2">
+          <Dropdown className="mt-2 mb-2 ">
             <Dropdown.Toggle>
               {device.selectedType.name || "Choose type"}
             </Dropdown.Toggle>
@@ -105,18 +117,26 @@ const CreateDevice = observer(({ show, onHide }) => {
               ))}
             </Dropdown.Menu>
           </Dropdown>
+          {/* <option key = 'blankChoice' hidden value> --Your placeholder text-- </option> */}
+     
+          <Form.Label className="mt-3" htmlFor="deviceName">Enter  name</Form.Label>
           <Form.Control
             className="mt-3"
-            placeholder="Enter device name"
+            id="deviceName"
+            type="text"
+           
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={e => setName(e.target.value)}
+             placeholder="Enter device name"
           />
+          <Form.Label className="mt-3" htmlFor="devicePrice">Enter price</Form.Label>
           <Form.Control
             className="mt-3"
-            placeholder="Enter price"
             type="number"
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
+           
+            value={price} 
+            onChange={e => setPrice(Number(e.target.value))}
+             placeholder="Enter price"
           />
           <Form.Control className="mt-3" type="file" onChange={selectFile} />
           <hr />
@@ -126,7 +146,10 @@ const CreateDevice = observer(({ show, onHide }) => {
           {info.map((i) => (
             <Row className="mt=4" key={i.number}>
               <Col md={4}>
+              {/* <Form.Label className="mt-3" htmlFor="propertyName">Enter property name</Form.Label> */}
                 <Form.Control
+                className="mt-3"
+                id="propertyName"
                   value={i.title}
                   onChange={(e) =>
                     changeInfo('title', e.target.value, i.number)
@@ -134,16 +157,21 @@ const CreateDevice = observer(({ show, onHide }) => {
                   placeholder="Enter property name"
                 />
               </Col>
-              <Col md={4}>
+              <Col  md={4}>
+              {/* <Form.Label className="mt-3" htmlFor="propertyDescription">Enter property description</Form.Label> */}
                 <Form.Control
+                id="propertyDescription"
+              
+                 className="mt-3"
                   value={i.description}
+                  
                   onChange={(e) =>
                     changeInfo('description', e.target.value, i.number)
                   }
                   placeholder="Enter property description"
                 />
               </Col>
-              <Col md={4}>
+              <Col className="mt-3" md={4}>
                 <Button
                   variant={"outline-danger"}
                   onClick={() => removeInfo(i.number)}
@@ -165,7 +193,7 @@ const CreateDevice = observer(({ show, onHide }) => {
       </Modal.Footer>
     </Modal>
   );
-// };
+  // };
 });
 
 export default CreateDevice;

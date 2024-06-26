@@ -7,7 +7,6 @@ import { authRoutes, publicRoutes } from "../routes";
 import Shop from "../pages/Shop";
 import { Context } from "../index";
 const AppRouter = () => {
-  //zaglushka ili mokovaia peremennaia
   //vyzyvaem hoock useContext
   const { user } = useContext(Context);
   console.log("user",user)

@@ -1,4 +1,14 @@
 import { $authHost, $host } from "./index";
+export const itemToCart = async (item) => {
+    console.log("ITEMDATAhttp",item)
+    const { data } = await $authHost.post("api/basket", item);
+    return data;
+  };
+  export const fetchBasket = async () => {
+    const { data } = await $host.get("api/basket");
+    return data;
+  };
+//   //////////////////////////////////////////////////
 export const createType = async (type) => {
   const { data } = await $authHost.post("api/type", type);
   return data;
@@ -26,22 +36,15 @@ export const fetchRatings = async () => {
   const { data } = await $host.get("api/rating");
   return data;
 };
-export const itemToCart = async (item) => {
-  console.log("CartDATA",item)
-  const { data } = await $authHost.post("api/cart", item);
-  return data;
-};
+
 // export const createDevice = async (formData) => {
 //   // console.log("formData",formData)
 //   const {data} = await $authHost.post("api/device", formData)
 //   return data
 // }
 export const createDevice = async (device) => {
+  
   const { data } = await $authHost.post("api/device", device);
-  return data;
-};
-export const updateDevice = async (device) => {
-  const { data } = await $authHost.patch("api/device", device);
   return data;
 };
 // export const fetchDevices = async (typeId, brandId, page, limit = 5) => {
@@ -54,13 +57,11 @@ export const updateDevice = async (device) => {
       limit,
     },
   });
-  // console.log("Data",data)
+  console.log("Data",data)
   return data;
 };
 
 export const fetchOneDevice = async (id) => {
-  console.log("idddddddddddddddddd",id)
   const { data } = await $host.get("api/device/" + id);
-  console.log("data",data)
   return data;
 };
