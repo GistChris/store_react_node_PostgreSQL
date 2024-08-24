@@ -17,7 +17,7 @@ class RatingController {
     console.log("userIdCONTROLLER", userId);
     // const rating = await Rating.create({ rate });
     const rating = await Rating.create({ rate, deviceId, userId });
-    console.log("&&&&&&&&&&&&&");
+ 
     // return res.json(rate);
     // console.log("RATINGCONTROLLER", res.json(rate) )
     return res.json(rating);

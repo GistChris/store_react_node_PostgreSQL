@@ -23,8 +23,8 @@ class UserController {
     //hashiryem parol, salt - skolco raz my bydem hashirovat parol
     const hashPassword = await bcrypt.hash(password, 5);
     const user = await User.create({ email, role, password: hashPassword });
-    const basket = await Basket.create({ userId: user.id });
-   
+    // const basket = await Basket.create({ userId: user.id });
+    console.log("USER REGISTRATION22222222")
     const token = generateJwt(user.id,email,user.role)
     return res.json({ token });
   }
