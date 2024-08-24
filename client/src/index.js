@@ -4,13 +4,14 @@ import UserStore from "./store/UserStore";
 import App from "./App";
 // import env from "./.env";
 import DeviceStore from "./store/DeviceStore";
-import BasketStore from "./store/BasketStore";
+import CartStore from "./store/CartStore";
+import  "./index.scss"
 // import { env } from 'node:process';
 // import * as dotenv from 'dotenv' // vea en https://github.com/motdotla/dotenv#como-uso-dotenv-con-import
 // // REVISAR LINK DE REFERENCIA DE IMPORTACIÓN
 // dotenv.config()
 require('dotenv').config();
-// import './index.css';
+
 
 // import reportWebVitals from './reportWebVitals';
 export const Context = createContext(null);
@@ -20,7 +21,10 @@ root.render(
     value={{
       user: new UserStore(),
       device: new DeviceStore(),
-      basket: new BasketStore(),
+      cart: new CartStore(),
+      orders: [],
+      // product: new CartStore(),
+      // products : JSON.parse(localStorage.getItem('products'))
     }}
   >
     <App />

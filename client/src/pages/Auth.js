@@ -18,6 +18,7 @@ const Auth = observer(() => {
   const location = useLocation();
   const navigate = useNavigate();
   const isLogin = location.pathname === LOGIN_ROUTER;
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const signIn=async()=>{

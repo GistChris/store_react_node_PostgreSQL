@@ -10,13 +10,15 @@ import { Context } from "../../index";
 import { fetchTypes, fetchBrands } from "../../http/deviceApi";
 import { observer } from "mobx-react-lite";
 import { createDevice } from "../../http/deviceApi";
-
+import Image from "react-bootstrap/Image";
 //observer chto-by my srasu mogli typy vybirat i videt rerendering
 const CreateDevice = observer(({ show, onHide }) => {
   // const CreateDevice = ({ show, onHide }) => {
+  // const [product, setProduct] = useState({ info: [] });
   const { device } = useContext(Context);
 
-  const [name, setName] = useState(" ");
+  // const [name, setName] = useState(" ");
+  const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [file, setFile] = useState(null);
   //massive kharakteristik
@@ -27,7 +29,7 @@ const CreateDevice = observer(({ show, onHide }) => {
     fetchBrands().then((data) => device.setBrands(data));
   }, []);
   const addInfo = () => {
-    setInfo([...info, { title: " ", description: " ", number: Date.now() }]);
+    setInfo([...info, { title: "", description: "", number: Date.now() }]);
   };
   const removeInfo = (number) => {
     setInfo(info.filter((i) => i.number !== number));
@@ -51,35 +53,48 @@ const CreateDevice = observer(({ show, onHide }) => {
   };
 
   const addDevice = () => {
-    // console.log(info);
+    // console.log("name", name);
+    // console.log("price", `${price}`);
+    // console.log("img", file);
+    // console.log("brandId", device.selectedBrand.id);
+    // console.log("typeId", device.selectedType.id);
+    // console.log("info", info);
     //ispolzuem ne stroku v formate json, a ispolzuem formData
     const formData = new FormData();
-    formData.append("name", name);
+    // formData.append("name", name);
     //BLOB - nabor bitov
     //znachenie dolzhno byt libo string libo blob - nabor bitov
     //v dannom sluchae mozhem otpravliat file
     //poetomy price converted in string
+    formData.append("name", name);
     formData.append("price", `${price}`);
     formData.append("img", file);
     formData.append("brandId", device.selectedBrand.id);
     formData.append("typeId", device.selectedType.id);
     //nevozmozhno peredat obiect na backend ,poetomy massiv peregoniaem s pomotshiu
     //JSON.stringify(info) v stroku libo BLOb'
+    // console.log("info", info)
     formData.append("info", JSON.stringify(info));
+     console.log("name", name);
+    console.log("price", `${price}`);
+    console.log("img", file);
+    console.log("brandId", device.selectedBrand.id);
+    console.log("typeId", device.selectedType.id);
+    console.log("info", info);
     //a na servere json stroka budet parsitsia obratno v massiv
     //esli zapros proshel uspeshno zakryvaem modalnoe pkno
-    createDevice(formData).then((data) => onHide());
+    createDevice(formData).then((data) => {
+      setName(' ');
+      setPrice(0);
+      setFile(null);
+      setInfo([]);
+      onHide();
+    });
     // console.log("formData",formData)
     // console.log(77777777)
   };
   return (
-    
-    <Modal
-      show={show}
-      onHide={onHide}
-      size="lg"
-      centered
-    >
+    <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           Add new device
@@ -118,25 +133,32 @@ const CreateDevice = observer(({ show, onHide }) => {
             </Dropdown.Menu>
           </Dropdown>
           {/* <option key = 'blankChoice' hidden value> --Your placeholder text-- </option> */}
-     
-          <Form.Label className="mt-3" htmlFor="deviceName">Enter  name</Form.Label>
+
+          {/* <Form.Label className="mt-3" htmlFor="deviceName">Enter  name</Form.Label> */}
           <Form.Control
             className="mt-3"
             id="deviceName"
             type="text"
-           
+            placeholder="Enter device name"
             value={name}
-            onChange={e => setName(e.target.value)}
-             placeholder="Enter device name"
+            onChange={(e) => setName(e.target.value)}
           />
-          <Form.Label className="mt-3" htmlFor="devicePrice">Enter price</Form.Label>
+          <Image
+            width={300}
+            height={300}
+            // src={process.env.REACT_APP_API_URL + product.img}
+            // product.img 06025b3a-2267-450a-9991-e5ae4b98b1e8.jpg
+            src={process.env.REACT_APP_API_URL + file}
+          />
+          <Form.Label className="mt-3" htmlFor="devicePrice">
+            Enter price
+          </Form.Label>
           <Form.Control
             className="mt-3"
             type="number"
-           
-            value={price} 
-            onChange={e => setPrice(Number(e.target.value))}
-             placeholder="Enter price"
+            value={price}
+            onChange={(e) => setPrice(Number(e.target.value))}
+            placeholder="Enter price"
           />
           <Form.Control className="mt-3" type="file" onChange={selectFile} />
           <hr />
@@ -146,27 +168,25 @@ const CreateDevice = observer(({ show, onHide }) => {
           {info.map((i) => (
             <Row className="mt=4" key={i.number}>
               <Col md={4}>
-              {/* <Form.Label className="mt-3" htmlFor="propertyName">Enter property name</Form.Label> */}
+                {/* <Form.Label className="mt-3" htmlFor="propertyName">Enter property name</Form.Label> */}
                 <Form.Control
-                className="mt-3"
-                id="propertyName"
+                  className="mt-3"
+                  id="propertyName"
                   value={i.title}
                   onChange={(e) =>
-                    changeInfo('title', e.target.value, i.number)
+                    changeInfo("title", e.target.value, i.number)
                   }
                   placeholder="Enter property name"
                 />
               </Col>
-              <Col  md={4}>
-              {/* <Form.Label className="mt-3" htmlFor="propertyDescription">Enter property description</Form.Label> */}
+              <Col md={4}>
+                {/* <Form.Label className="mt-3" htmlFor="propertyDescription">Enter property description</Form.Label> */}
                 <Form.Control
-                id="propertyDescription"
-              
-                 className="mt-3"
+                  id="propertyDescription"
+                  className="mt-3"
                   value={i.description}
-                  
                   onChange={(e) =>
-                    changeInfo('description', e.target.value, i.number)
+                    changeInfo("description", e.target.value, i.number)
                   }
                   placeholder="Enter property description"
                 />

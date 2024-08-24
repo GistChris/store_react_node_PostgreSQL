@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { Context } from "./index";
 import { check } from "./http/userApi";
 import { Spinner } from "react-bootstrap";
+import  "./App.scss"
 //obernem component App v observer, tak kak nam nyzhno sostoianie user userStore
 const App = observer(() => {
   const { user } = useContext(Context);

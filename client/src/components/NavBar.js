@@ -1,72 +1,50 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Context } from "../index";
+import CartSigne from "./CartSign";
 import Navbar from "react-bootstrap/Navbar";
-import { BsFillBasket3Fill } from "react-icons/bs";
-import { BsFillCartCheckFill } from "react-icons/bs";
-import { Bs0Circle } from "react-icons/bs";
-
-import Form from "react-bootstrap/Form";
-// import Button from 'react-bootstrap/Button';
-import InputGroup from "react-bootstrap/InputGroup";
-// import Row from 'react-bootstrap/Row';
-// import Col from 'react-bootstrap/Col';
+import { jwtDecode } from "jwt-decode";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
+import Form from "react-bootstrap/Form";
 import { NavLink } from "react-router-dom";
-import { ADMIN_ROUTER, BASKET_ROUTER, LOGIN_ROUTER, SHOP_ROUTER } from "../utils/consts";
+import { ADMIN_ROUTER,LOGIN_ROUTER, SHOP_ROUTER } from "../utils/consts";
 // import { observer } from "mobx-react-light";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
+const token=jwtDecode(  localStorage.getItem('token'))
+console.log("ROLE",token.role)
 //observer dlia pererendinga v rezhime realnogo vremeni
 const NavBar = observer(() => {
-  let [cartOpen,setCartOpen]=useState(false)
+  // let [cartOpen,setCartOpen]=useState(false)
   // const NavBar =() => {
   const { user } = useContext(Context);
+  // const {orders}= useContext(Context);
   const navigate = useNavigate();
   const logOut = () => {
+    console.log("addItem");
     //pererenderivaetsia tolko navbar
     user.setUser({});
     user.setIsAuth(false);
-//eto moe perecliuchenie
-    // navigate(LOGIN_ROUTER)
   };
   return (
     <Navbar bg="dark" variant="dark" className="navbar">
-      {/* <Navbar bg="dark" variant="dark"> */}
       <Container>
-        <NavLink style={{ color: "white" }} to={SHOP_ROUTER}>
-          BuyDevice
+        <NavLink  className="shop-link"  to={SHOP_ROUTER}>
+          FLAGMAN
         </NavLink>
-        <BsFillCartCheckFill onClick={()=>setCartOpen(cartOpen=!cartOpen)} className={`cart ${cartOpen &&'active'}`} color="white" cursor="pointer" />
-        {/* <BsFillBasket3Fill className="BsFillBasket2Fill"/> */}
+      
+   <CartSigne className="ml-7"></CartSigne>
         {user.isAuth ? (
           <Nav className="ml-auto gap-4" style={{ color: "white" }}>
-        
-            <Button
-             type="button" 
-             className="btn btn-default btn-sm"
-             onClick={() => navigate(BASKET_ROUTER)}
-             >
-                <b> Add to Cart </b>
-            </Button>
-               <Button
-              variant={"outline-light"}
-              // onClick={() => navigate(LOGIN_ROUTER)}
-              onClick={() => logOut()}
-              className="ml-2"
-            >
-              basket
-            </Button>
-            <Button
+            {token.role==="ADMIN" ? (<Button
               variant={"outline-light"}
               onClick={() => navigate(ADMIN_ROUTER)}
             >
               Admin panel
-            </Button>
+            </Button>) : (null)}
             <Button
               variant={"outline-light"}
-              // onClick={() => navigate(LOGIN_ROUTER)}
               onClick={() => logOut()}
               className="ml-2"
             >
@@ -83,8 +61,6 @@ const NavBar = observer(() => {
             >
               SignIn
             </Button>
-            {/* <Button variant={"outline-light"}>Admin panel</Button> */}
-      {/* <Button variant={"outline-light"}>SignIn</Button> */}
           </Nav>
         )}
       </Container>
@@ -146,7 +122,5 @@ const NavBar = observer(() => {
   //     }
   // </style>
 });
-{/* <style>
 
-</style> */}
 export default NavBar;

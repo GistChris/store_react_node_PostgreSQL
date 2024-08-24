@@ -11,28 +11,30 @@ import Pages from "../components/Pages";
 // import "./base.css";
 // import "./lightbox.css";
 import "./index.css";
-
+import { jwtDecode } from "jwt-decode";
 import { observer } from "mobx-react-lite";
 import { Context } from "../index";
 import { fetchTypes, fetchBrands, fetchDevices } from "../http/deviceApi";
 const Admin = observer(() => {
+  const token=jwtDecode(  localStorage.getItem('token'))
   ///////////////////////////////////////////////
   const { device } = useContext(Context);
+  const [brandVisible, setBrandVisible] = useState(false);
+  const [typeVisible, setTypeVisible] = useState(false);
+  const [deviceVisible, setDeviceVisible] = useState(false);
+  //////////////////////////////////////
+  const [showBrands, setShowBrands] = useState(false);
+  const [showTypes, setShowTypes] = useState(false);
+  const [showItems, setShowItems] = useState(false);
   useEffect(() => {
     //v sluchae uspeshnogo zaprosa .then peredaem data
     fetchTypes().then((data) => device.setTypes(data));
-
     fetchBrands().then((data) => device.setBrands(data));
     // fetchDevices(null, null, 1, 2).then((data) => {
-    fetchDevices(null, null, 1, 8).then((data) => {
-      device.setDevices(data.rows);
-      device.setTotalCount(data.count);
-    });
-  }, []);
-  // const {userId}=useParams()
-  // console.log("userIdshop",userId)
-  // hook useEffect esli massiv zavisimostei pust .. ,[] to podgruzhaet stranitsiu odin raz
-  useEffect(() => {
+    // // fetchDevices(null, null, 1, 8).then((data) => {
+    //   device.setDevices(data.rows);
+    //   device.setTotalCount(data.count);
+    // });
     fetchDevices(
       device.selectedType.id,
       device.selectedBrand.id,
@@ -43,17 +45,29 @@ const Admin = observer(() => {
       device.setTotalCount(data.count);
     });
   }, [device.page, device.selectedType, device.selectedBrand]);
+  // }, []);
+  
+  // const {userId}=useParams()
+  // console.log("userIdshop",userId)
+  // hook useEffect esli massiv zavisimostei pust .. ,[] to podgruzhaet stranitsiu odin raz
+  ////////////////////////////////////////////
+  // useEffect(() => {
+  //   fetchDevices(
+  //     device.selectedType.id,
+  //     device.selectedBrand.id,
+  //     device.page,
+  //     2
+  //   ).then((data) => {
+  //     device.setDevices(data.rows);
+  //     device.setTotalCount(data.count);
+  //   });
+  // }, [device.page, device.selectedType, device.selectedBrand]);
   //////////////////////////////////////////////
-  const [brandVisible, setBrandVisible] = useState(false);
-  const [typeVisible, setTypeVisible] = useState(false);
-  const [deviceVisible, setDeviceVisible] = useState(false);
-  //////////////////////////////////////
-  const [showBrands, setShowBrands] = useState(false);
-  const [showTypes, setShowTypes] = useState(false);
-  const [showItems, setShowItems] = useState(false);
+  
 
   return (
     <Container className="d-flex flex-column">
+     < h1>Bonjour{token.email}</h1>
       <Button
         variant={"outline-dark"}
         className="mt-4 p-2"

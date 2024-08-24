@@ -1,4 +1,6 @@
 import { $authHost, $host } from "./index";
+import { useNavigate } from "react-router-dom";
+
 export const createType = async (type) => {
   const { data } = await $authHost.post("api/type", type);
   return data;
@@ -7,8 +9,15 @@ export const fetchTypes = async () => {
   const { data } = await $host.get("api/type");
   return data;
 };
+/////////////////////
+export const fetchInfos = async () => {
+  const { data } = await $host.get("api/info");
+  return data;
+};
+///////////////////////////////////
 
 export const createBrand = async (brand) => {
+  console.log("brand",brand)
   const { data } = await $authHost.post("api/brand", brand);
   return data;
 };
@@ -18,7 +27,6 @@ export const fetchBrands = async () => {
 };
 //rating
 export const createRating = async (rating) => {
-  console.log("RATINGDATA",rating)
   const { data } = await $authHost.post("api/rating", rating);
   return data;
 };
@@ -27,7 +35,6 @@ export const fetchRatings = async () => {
   return data;
 };
 export const itemToCart = async (item) => {
-  console.log("CartDATA",item)
   const { data } = await $authHost.post("api/cart", item);
   return data;
 };
@@ -37,15 +44,33 @@ export const itemToCart = async (item) => {
 //   return data
 // }
 export const createDevice = async (device) => {
+  console.log("device",device.name)
   const { data } = await $authHost.post("api/device", device);
   return data;
 };
 export const updateDevice = async (device) => {
-  const { data } = await $authHost.patch("api/device", device);
+  // const { data } = await $authHost.patch("api/device", device);
+
+
+  const { data } = await $authHost.put("api/device", device);
   return data;
 };
+export const deleteDevice = async (itemId) => {
+  // const navigate = useNavigate();
+  // navigate(DEVICE_ROUTER + "/")
+  console.log("deletedevice",itemId)
+  const deviceId = itemId;
+  const { data } = await $authHost.delete("api/device?id=" + deviceId);
+
+  return data;
+};
+// export const fetchOneDevice = async (id) => {
+//   const { data } = await $host.get("api/device/" + id);
+//   return data;
+// };
+
 // export const fetchDevices = async (typeId, brandId, page, limit = 5) => {
-  export const fetchDevices = async (typeId, brandId, page, limit = 3) => {
+export const fetchDevices = async (typeId, brandId, page, limit = 7) => {
   const { data } = await $host.get("api/device", {
     params: {
       typeId,
@@ -54,13 +79,23 @@ export const updateDevice = async (device) => {
       limit,
     },
   });
-  // console.log("Data",data)
+
+  return data;
+};
+export const fetchAllDevices = async (typeId, brandId, page, limit = 0) => {
+  // export const fetchAllDevices = async () => {
+  const { data } = await $host.get("api/device", {
+    params: {
+      typeId,
+      brandId,
+      page,
+      limit,
+    },
+  });
   return data;
 };
 
 export const fetchOneDevice = async (id) => {
-  console.log("idddddddddddddddddd",id)
   const { data } = await $host.get("api/device/" + id);
-  console.log("data",data)
   return data;
 };

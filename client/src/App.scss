@@ -1,0 +1,136 @@
+.App {
+  text-align: center;
+}
+.remove{
+  color:#dc3d3d;
+}
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+.cart-container{
+  display: flex;
+  
+}
+.gray-line{
+  margin: 10px;
+  // text-align: center;
+  height: 2px;
+  // width: 70%;
+  background-color: blue;
+}
+.text-container{
+  display: flex;
+  // flex-direction: column;
+  justify-content:space-between ;
+}
+.cart-list{
+  border: 2px solid grey;
+    width: 70%;
+    margin: 10px;
+}
+.quantity-input{
+  width: 60px;
+}
+.item-list-cart{
+  display: flex;
+  flex-direction: column;
+}
+.cart-total{
+  text-align: center;
+  // justify-content: center;
+  // align-items: center;
+  // display: flex;
+  border: 2px solid red;
+    width: 20%;
+    height: max-content;
+    margin: 10px;
+}
+.item-remove{
+  color:blueviolet;
+  cursor: pointer;
+}
+.item-cart{
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  height: max-content;
+  width: max-content;
+
+  // background-color: #dc3d3d;
+  // border:20px solid green;
+  border: 2px solid rgb(216, 231, 234);
+  // cursor: pointer;
+}
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+$oval-background:#dc3d3d;
+.cart{
+    float:right;
+    cursor:pointer;
+    transition: color 500ms ease;
+    font-size: large;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color:$oval-background;
+  
+  }
+  .shop-link{
+    color:white;
+  }
+  .search-block{
+    display: flex;
+    justify-content: center;
+    padding: 4vw;
+    
+    // flex-direction: row;
+  }
+  .search{
+    width: 40vw;
+    margin-right: 20px;
+  }
+  .navbar{
+    display: flex;
+// height: 200px;
+  }
+  .cart:hover,
+  .cart.active{
+    color:#dc3d3d;
+  }
+  .quantity{
+    /* margin-left: 10px; */
+    // position:absolute;
+    color:blue;
+   font-weight: 900;
+  }

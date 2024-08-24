@@ -1,10 +1,13 @@
 import { makeAutoObservable } from "mobx";
 
- export default class BasketStore {
+ export default class CartStore {
 //globalnoe khranilitshe i v lubom meste prilozhenia mozhno poluchat is nego dannye
   constructor() {
+    this._products=[];
+    this._orders=[];
+    // this._carts=[];
     // this._basket=[];
-    this._baskets=[];
+    // this._baskets=[];
     // this._ratings=[];
     // this._types = [
     //   { id: 1, name: "frigidaires" },
@@ -24,9 +27,9 @@ import { makeAutoObservable } from "mobx";
     ////////////////////////////
     // this._brands = [];
     ////////////////////////////////
-    this._devices = [];
-    ////////////////////////
-    // this._devices = [
+    // // this._devices = [];
+    // ////////////////////////
+    // this._products = [
     //   {
     //     id: 1,
     //     name: "SAMSUNG Galaxy 20",
@@ -85,75 +88,88 @@ import { makeAutoObservable } from "mobx";
     //   },
     // ];
     ///////////////////////////////////////////////////mozhno ubrat
-    this._selectedType = {};
-    this._selectedBrand = {};
+    // this._selectedType = {};
+    // this._selectedBrand = {};
     ///////////////////////////////////////////////////mozhno ubrat
     // this.page = 1;
     //pole ovechaiutshee za tekutshuiu starnitsy (po umolchaniu 1)
-    this._page = 1;
+    // this._page = 1;
     //obtshee kolichestvo tovarov po dannomu zaprosu
-    this._totalCount = 0;
+    // this._totalCount = 0;
     //kolichestvo tovarov na odnoi stranitse
-    this._limit = 3;
+    // this._limit = 3;
     makeAutoObservable(this);
   }
-  setBaskets(baskets) {
-    this._baskets = baskets;
+  setProducts(products) {
+    this._products = products;
   }
-  setRatings(ratings) {
-    this._ratings = ratings;
+  setOrders(orders) {
+    this._orders = orders;
   }
-  setTypes(types) {
-    this._types = types;
+  // setBaskets(baskets) {
+  //   this._baskets = baskets;
+  // }
+  // setRatings(ratings) {
+  //   this._ratings = ratings;
+  // }
+  // setTypes(types) {
+  //   this._types = types;
+  // }
+  // setBrands(brands) {
+  //   this._brands = brands;
+  // }
+  // setDevices(devices) {
+  //   this._devices = devices;
+  // }
+  // setSelectedType(type) {
+  //   this.setPage(1);
+  //   this._selectedType = type;
+  // }
+  // setSelectedBrand(brand) {
+  //   this.setPage(1);
+  //   this._selectedBrand = brand;
+  // }
+  // setPage(page) {
+  //   this._page = page;
+  // }
+  // setTotalCount(count) {
+  //   this._totalCount = count;
+  // }
+  get products(){
+    // console.log("product.products")
+    return this.products;
   }
-  setBrands(brands) {
-    this._brands = brands;
+  get orders(){
+    return this.orders;
   }
-  setDevices(devices) {
-    this._devices = devices;
-  }
-  setSelectedType(type) {
-    this.setPage(1);
-    this._selectedType = type;
-  }
-  setSelectedBrand(brand) {
-    this.setPage(1);
-    this._selectedBrand = brand;
-  }
-  setPage(page) {
-    this._page = page;
-  }
-  setTotalCount(count) {
-    this._totalCount = count;
-  }
-  get baskets() {
-    return this._baskets;
-  }
-  get ratings() {
-    return this._ratings;
-  }
-  get types() {
-    return this._types;
-  }
-  get brands() {
-    return this._brands;
-  }
-  get devices() {
-    return this._devices;
-  }
-  get selectedType() {
-    return this._selectedType;
-  }
-  get selectedBrand() {
-    return this._selectedBrand;
-  }
-  get totalCount() {
-    return this._totalCount;
-  }
-  get page() {
-    return this._page;
-  }
-  get limit() {
-    return this._limit;
-  }
+  // get baskets() {
+  //   return this._baskets;
+  // }
+  // get ratings() {
+  //   return this._ratings;
+  // }
+  // get types() {
+  //   return this._types;
+  // }
+  // get brands() {
+  //   return this._brands;
+  // }
+  // get devices() {
+  //   return this._devices;
+  // }
+  // get selectedType() {
+  //   return this._selectedType;
+  // }
+  // get selectedBrand() {
+  //   return this._selectedBrand;
+  // }
+  // get totalCount() {
+  //   return this._totalCount;
+  // }
+  // get page() {
+  //   return this._page;
+  // }
+  // get limit() {
+  //   return this._limit;
+  // }
 }

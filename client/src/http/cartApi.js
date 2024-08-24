@@ -8,6 +8,13 @@ export const itemToCart = async (item) => {
     const { data } = await $host.get("api/basket");
     return data;
   };
+  export const fetchProducts = async () => {
+    // const { data } = await $host.get("api/basket");
+    // return data;
+    const  data  = await JSON.parse(localStorage.getItem('products'));
+    console.log("CARTDatayy",data)
+    return data;
+  };
 //   //////////////////////////////////////////////////
 export const createType = async (type) => {
   const { data } = await $authHost.post("api/type", type);

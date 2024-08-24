@@ -24,6 +24,10 @@ import { makeAutoObservable } from "mobx";
     ////////////////////////////////
     this._devices = [];
     ////////////////////////
+    this._infos = [];
+    ////////////////////////
+    // this._products = [];
+    this._cart = [];
     // this._devices = [
     //   {
     //     id: 1,
@@ -93,11 +97,21 @@ import { makeAutoObservable } from "mobx";
     this._totalCount = 0;
     //kolichestvo tovarov na odnoi stranitse
     this._limit = 3;
+    //kolichestvo tovarov v korzine
+    this._quantityCartItems=0
     makeAutoObservable(this);
   }
-  
+  setQuantityCartItems(quantityCartItems){
+    this._quantityCartItems = quantityCartItems;
+  }
   setRatings(ratings) {
     this._ratings = ratings;
+  }
+  // setProducts(products) {
+  //   this._products = products;
+  // }
+  setCart(cart) {
+    this._cart = cart;
   }
   setTypes(types) {
     this._types = types;
@@ -107,6 +121,9 @@ import { makeAutoObservable } from "mobx";
   }
   setDevices(devices) {
     this._devices = devices;
+  }
+  setInfos(infos) {
+    this._infos = infos;
   }
   setSelectedType(type) {
     this.setPage(1);
@@ -122,8 +139,20 @@ import { makeAutoObservable } from "mobx";
   setTotalCount(count) {
     this._totalCount = count;
   }
+  get quantityCartItems() {
+    return this._quantityCartItems;
+  }
   get ratings() {
     return this._ratings;
+  }
+  get infos() {
+    return this._infos;
+  }
+  get cart() {
+    return this._cart;
+  }
+  get products(){
+    return this._products
   }
   get types() {
     return this._types;
