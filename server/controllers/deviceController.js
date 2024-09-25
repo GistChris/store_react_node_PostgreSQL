@@ -14,7 +14,6 @@ class DeviceController {
       //dlia peremetshenia fila v papku static
       //_dirname put do tekutshei papki s controllers, '..' dve tochki chto by vernytsia na derectoriu nazad
       img.mv(path.resolve(__dirname, "..", "static", fileName));
-      console.log("fileName",fileName)
       const device = await Device.create({
         name,
         price,
@@ -22,14 +21,10 @@ class DeviceController {
         typeId,
         img: fileName,
       });
-      console.log("2222req.body",req.body)
-// console.log("device", device)
       if (info) {
          console.log("device.id", device.id);
-        // console.log("CREATEDEVICEinfo",info )
         //na fronte budem parsit v json stroku, a backe budem peregoniat v javascript objects
         let infos = JSON.parse(info);
-        // console.log("infos", infos);
         infos.forEach((i) =>
           DeviceInfo.create({
             title: i.title,
@@ -45,25 +40,25 @@ class DeviceController {
       next(ApiError.badRequest(e.message));
     }
   }
-  async update(req, res, next) {
-    
+  ///////UDATE/////////
+  async update(req, res, next) {  
     try {
       const { name, price, brandId, typeId, info, newInfo,deviceId } = req.body;
       const { img } = req.files;
-      // console.log("name", name);
-      // console.log("price", price);
-      // console.log("brandId", brandId);
-      // console.log("typeId", typeId);
-      // console.log("img", img);
-      // console.log("newInfo", newInfo);
+      console.log("img",img)
+      console.log("name",name)
+      console.log("price",price)
+      console.log("brandId",brandId)
+      console.log("typeId",typeId)
+      console.log("info",info)
+      console.log("newInfo",newInfo)
+      console.log("deviceId",deviceId)
       //dlia sozdania imeni
       let fileName = uuid.v4() + ".jpg";
       //dlia peremetshenia fila v papku static
       //_dirname put do tekutshei papki s controllers, '..' dve tochki chto by vernytsia na derectoriu nazad
       img.mv(path.resolve(__dirname, "..", "static", fileName));
-      // console.log("deviceId",deviceId);
       const device = await Device.update(
-        // const device = await Device.create(
         {
           name:name,
           price:price,
@@ -77,22 +72,16 @@ class DeviceController {
           },
         }
       );
-      // console.log("UPDATEdevicenewInfo",newInfo);
       if (info) {
-        // console.log("info",info);
         //na fronte budem parsit v json stroku, a backend budem peregonian v javascript objects
         let infos = JSON.parse(info);
-        // console.log("infos",infos)
         infos.forEach((i) =>
           DeviceInfo.create({
-            // DeviceInfo.update({
             title: i.title,
             description: i.description,
             deviceId: deviceId,
-            // deviceId: device.id,
           })
         );
-        console.log("UPDATEdeviceINFOOO");
       }
       if (newInfo) {
         //na fronte budem parsit v json stroku, a backend budem peregonian v javascript objects
@@ -158,6 +147,7 @@ class DeviceController {
     let { brandId, typeId, limit, page, deviceName = "SASHA" } = req.query;
     page = page || 1;
     limit = limit || 9;
+    // limit = 109;
     //offset eto otsup
     let offset = page * limit - limit;
     let devices;
@@ -229,21 +219,24 @@ class DeviceController {
         offset,
       });
     }
-    if (brandId && typeId && limit != 0) {
+    if (brandId && typeId && limit !=0) {
       console.log("if (brandId && typeId) ");
       // devices = await Device.findAll({
       //   // where: { typeId, brandId, limit, offset },
       //   where: { typeId, brandId,}, limit, offset
       // });
       //  devices = await Device.findAll({ where: { brandId, brandId } });
-      devices = await Device.findAndCountAll({
+      console.log("Devicehhhhhhhhhhh",Device);
+      // devices = await Device.slice().sort((a,b)=>a.id-b.id).findAndCountAll({
+        devices = await Device.findAndCountAll({
         // where: { typeId, brandId, limit, offset },
         where: { typeId, brandId },
         limit,
         offset,
       });
     }
-    // console.log("devicesGetAll",res.json(devices))
+    console.log("Devicehhhhhhhhhhh",Device);
+    // console.log("devicesGetAll",res.json(devices.count))
     return res.json(devices);
     // return res.json.parse(devices);
   }
