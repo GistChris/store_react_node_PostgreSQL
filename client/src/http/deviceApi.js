@@ -79,10 +79,10 @@ export const fetchDevices = async (typeId, brandId, page, limit = 7) => {
       limit,
     },
   });
-
+console.log("DATAROW",data.rows)
   return data;
 };
-export const fetchAllDevices = async (typeId, brandId, page, limit = 0) => {
+export const fetchAllDevices = async (typeId, brandId, page, limit ) => {
   // export const fetchAllDevices = async () => {
   const { data } = await $host.get("api/device", {
     params: {
@@ -92,6 +92,7 @@ export const fetchAllDevices = async (typeId, brandId, page, limit = 0) => {
       limit,
     },
   });
+  console.log("DATAROW",data.rows)
   return data;
 };
 

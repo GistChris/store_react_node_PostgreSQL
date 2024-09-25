@@ -30,6 +30,7 @@ const App = observer(() => {
         .finally(() => setLoading(false));
     // }, 1000);
   }, []);
+  // }, [user]);
 
   if (loading) {
     return <Spinner animation={"grow"} />;

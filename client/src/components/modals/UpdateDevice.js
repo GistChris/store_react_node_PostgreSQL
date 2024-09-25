@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -8,12 +9,13 @@ import Col from "react-bootstrap/Col";
 import { useParams } from "react-router-dom";
 // import { Dropdown, Row, Col } from "react-bootstrap";
 import { Context } from "../../index";
-import { fetchTypes, fetchBrands } from "../../http/deviceApi";
+// import { fetchTypes, fetchBrands } from "../../http/deviceApi";
 import { observer } from "mobx-react-lite";
 import { updateDevice } from "../../http/deviceApi";
 import Image from "react-bootstrap/Image";
 import { fetchProducts } from "../../http/cartApi";
-import { fetchOneDevice } from "../../http/deviceApi";
+import { fetchOneDevice, fetchDevices } from "../../http/deviceApi";
+import { UPDATE_DEVICE_ROUTER, SHOP_ROUTER } from "../../utils/consts";
 
 //observer chto-by my srasu mogli typy vybirat i videt rerendering
 const UpdateDevice = observer(({ show, onHide, id }) => {
@@ -24,9 +26,13 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
   const [type, setType] = useState("");
   const [price, setPrice] = useState(0);
   const [file, setFile] = useState(null);
+  const [showImage, setShowImage] = useState(false);
   //massive kharakteristik
   const [info, setInfo] = useState([]);
   let [newInfo, setNewInfo] = useState([]);
+  let [currentAvatar, setCurrentAvatar] = useState("");
+  const addFile = React.useRef(" ");
+  const navigate = useNavigate();
   //useEffect dlia zagruzki s DB
   // console.log("product.info", product.info);
   /////////////////////////////////////////
@@ -34,7 +40,7 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
     setNewInfo([...product.info]);
     fetchOneDevice(id).then((data) => setProduct(data));
     // fetchOneDevice(id).then((data) =>  setNewInfo([...product.info]));
-  },[]);
+  }, []);
   /////////////////////////////////////////////
   // console.log("new----------Info", newInfo);
   // const addNewInfo = () => {
@@ -84,48 +90,152 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
     console.log(" newInfobbb", newInfo);
   };
   const selectFile = (e) => {
+    const input = e.target;
+    const file = input?.files?.[0];
+    setShowImage(true);
     setFile(e.target.files[0]);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      addFile.value = e.target?.result;
+      currentAvatar = setCurrentAvatar(addFile.value);
+      // submitMedia();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearForm = () => {
+    setName(product.name);
+    console.log("product.price ", product.price);
+    setPrice(product.price);
+    setFile(null);
+    setInfo([]);
+    brand.name = null;
+    type.name = null;
+    console.log("type.name ", device.types[product.typeId]?.name);
+    device.selectedType.name = device.types[product.typeId]?.name;
+    console.log("brand.name ", device.brands[product.brandId]?.name);
+    device.selectedBrand.name = device.brands[product.brandId]?.name;
+    addFile.value = null;
+    setShowImage(false);
   };
   const revampDevice = () => {
     console.log("newInfo", newInfo);
     console.log("Info", info);
-    console.log("product", product);
+    // console.log("product", product);
+    console.log("product.name", product.name);
+    console.log("name", name);
     console.log("product.price", product.price);
+    console.log("price", `${price}`);
     console.log("product.img", product.img);
+    console.log("file", file);
     console.log("product.brandId", product.brandId);
+    console.log("brand.id", brand.id);
     console.log("product.typeId", product.typeId);
+    console.log("type.id", type.id);
     console.log("deviceId", product.id);
+    // console.log("product.price", product.price);
+    // console.log("product.img", product.img);
+    // console.log("product.brandId", product.brandId);
+    // console.log("product.typeId", product.typeId);
+    // console.log("deviceId", product.id);
     const formData = new FormData();
-    formData.append("name", name || product.name);
+
     //BLOB - nabor bitov
     //znachenie dolzhno byt libo string libo blob - nabor bitov
     //v dannom sluchae mozhem otpravliat file
     //poetomy price converted in string
+    // {showTypes ? "hide types" :"show types"}
+
+    // formData.append("name", name || product.name);
     // formData.append("price", `${price}` || product.price);
     // formData.append("img", file || product.img);
     // formData.append("brandId", brand.id || product.brandId);
     // formData.append("typeId", type.id || product.typeId);
     // formData.append("deviceId", product.id);
-    formData.append("price", `${price}`);
-    formData.append("img", file);
-    formData.append("brandId", brand.id);
-    formData.append("typeId", type.id);
-    formData.append("deviceId", product.id);
+    // formData.append("price", `${price}`);
+    // formData.append("img", file);
+    // formData.append("brandId", brand.id);
+    // formData.append("typeId", type.id);
+    // formData.append("deviceId", product.id);
     //nevozmozhno peredat obiect na backend ,poetomy massiv peregoniaem s pomotshiu
     //JSON.stringify(info) v stroku libo BLOb'
+    ////////////////////////////////////////////////////
+    if (name) {
+      // console.log("ITEM NAME EXIST");
+      formData.append("name", name);
+    } else {
+      console.log("ITEM NAME EXIST");
+    }
+    if (brand.id) {
+      formData.append("brandId", brand.id);
+    } else {
+      formData.append("brandId", product.brandId);
+    }
+    if (type.id) {
+      formData.append("typeId", type.id);
+    } else {
+      formData.append("typeId", product.typeId);
+    }
+    if (`${price}`) {
+      formData.append("price", `${price}`);
+    } else {
+      formData.append("price", product.price);
+    }
+    if (file) {
+      formData.append("img", file);
+    } else {
+      // console.log("product.img",product.img)
+      formData.append("img", product.img);
+    }
+    // formData.append("name","name" ? product.name : name);
+    // formData.append("price", "price" ? product.price : `${price}`);
+    // console.log("FFFIILLEEE",file)
+    // formData.append("img", file);
+    // formData.append("brandId", "brandId" ? product.brandId : brand.id);
+    // formData.append("typeId", "typeId" ? product.typeId : type.id);
+    formData.append("deviceId", product.id);
     formData.append("info", JSON.stringify(info));
     formData.append("newInfo", JSON.stringify(newInfo));
+    ///////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////
+    // formData.append("name", product.name || name);
+    // formData.append("price", product.price || `${price}`);
+    // formData.append("img", product.img || file);
+    // formData.append("brandId", product.brandId || brand.id);
+    // formData.append("typeId", product.typeId || type.id);
+    // formData.append("deviceId", product.id);
+    // formData.append("info", JSON.stringify(info));
+    // formData.append("newInfo", JSON.stringify(newInfo));
+    ///////////////////////////////////////////////////////
     //a na servere json stroka budet parsitsia obratno v massiv
     //esli zapros proshel uspeshno zakryvaem modalnoe pkno
     // console.log("formData.price",formData.img)
     // console.log("formData",formData)
-    updateDevice(formData).then((data) => onHide());
+    updateDevice(formData).then((data) => {
+      // device.selectedBrand.id=null
+      // device.selectedType.id=null
+      // clearForm();
+      fetchDevices(
+        device.selectedType.id,
+        device.selectedBrand.id,
+        device.page,
+        7,
+        (device.name = "k")
+      ).then((data) => {
+        device.setDevices(data.rows);
+        device.setTotalCount(data.count);
+      });
+      onHide();
+    });
+    // updateDevice(formData).then((data) => {onHide();navigate(SHOP_ROUTER);});
+    // navigate(SHOP_ROUTER);
   };
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Update device {product.name}, DeviceId{product.id}
+          Update device {name}, {product.name}, DeviceId{product.id},{product.typeId},
+          {product.brandId},{product.price}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -174,7 +284,7 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
           <Form.Control
             className="mt-3"
             type="number"
-            // value={price}
+            value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
             // placeholder={product.price || 7}
             placeholder={product.price || "Enter price"}
@@ -182,13 +292,8 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
           <Image
             width={300}
             height={300}
-            // src={process.env.REACT_APP_API_URL + product.img}
-            src={
-              process.env.REACT_APP_API_URL + product.img
-              // || process.env.REACT_APP_API_URL + file
-            }
+            src={addFile.value || process.env.REACT_APP_API_URL + product.img}
           />
-          {/* <p>{product.info[0].id}</p> */}
           <Form.Control className="mt-3" type="file" onChange={selectFile} />
           <hr />
           {/* <Button variant={"outline-dark"} onClick={addNewInfo}>
@@ -198,7 +303,42 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
           <Button variant={"outline-dark"} onClick={addInfo}>
             Add new property
           </Button>
-
+          {info.map((i) => (
+            <Row className="mt=4" key={i.number}>
+              <Col md={4}>
+                {/* <Form.Label className="mt-3" htmlFor="propertyName">Enter property name</Form.Label> */}
+                <Form.Control
+                  className="mt-3"
+                  id="propertyName"
+                  value={i.title}
+                  onChange={(e) =>
+                    changeInfo("title", e.target.value, i.number)
+                  }
+                  placeholder="Enter property name"
+                />
+              </Col>
+              <Col md={4}>
+                {/* <Form.Label className="mt-3" htmlFor="propertyDescription">Enter property description</Form.Label> */}
+                <Form.Control
+                  id="propertyDescription"
+                  className="mt-3"
+                  value={i.description}
+                  onChange={(e) =>
+                    changeInfo("description", e.target.value, i.number)
+                  }
+                  placeholder="Enter property description"
+                />
+              </Col>
+              <Col className="mt-3" md={4}>
+                <Button
+                  variant={"outline-danger"}
+                  onClick={() => removeInfo(i.number)}
+                >
+                  Delete
+                </Button>
+              </Col>
+            </Row>
+          ))}
           {/* {newInfo.map((i) => ( */}
           {product.info.map((i, index) => (
             <Row className="mt=4" key={i.id}>
@@ -234,42 +374,6 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
               </Col>
             </Row>
           ))}
-          {info.map((i) => (
-            <Row className="mt=4" key={i.number}>
-              <Col md={4}>
-                {/* <Form.Label className="mt-3" htmlFor="propertyName">Enter property name</Form.Label> */}
-                <Form.Control
-                  className="mt-3"
-                  id="propertyName"
-                  value={i.title}
-                  onChange={(e) =>
-                    changeInfo("title", e.target.value, i.number)
-                  }
-                  placeholder="Enter propertyf name"
-                />
-              </Col>
-              <Col md={4}>
-                {/* <Form.Label className="mt-3" htmlFor="propertyDescription">Enter property description</Form.Label> */}
-                <Form.Control
-                  id="propertyDescription"
-                  className="mt-3"
-                  value={i.description}
-                  onChange={(e) =>
-                    changeInfo("description", e.target.value, i.number)
-                  }
-                  placeholder="Enter property description"
-                />
-              </Col>
-              <Col className="mt-3" md={4}>
-                <Button
-                  variant={"outline-danger"}
-                  onClick={() => removeInfo(i.number)}
-                >
-                  Delete
-                </Button>
-              </Col>
-            </Row>
-          ))}
         </Form>
       </Modal.Body>
 
@@ -282,6 +386,9 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
                 </Dropdown.Item>
               ))} */}
       <Modal.Footer>
+        <Button variant="outline-success" onClick={clearForm}>
+          Clean
+        </Button>
         <Button variant="outline-danger" onClick={onHide}>
           Close
         </Button>

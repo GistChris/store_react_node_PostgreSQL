@@ -44,6 +44,7 @@ const DevicePage = observer(() => {
   // console.log("CARD", card);
   // console.log("CART", cart.cart);
   const addItemToCart = (product) => {
+    console.log("orders777777");
     // const addItemToCart = (device) => {
     // this.setState({orders:[...this.state.orders,device]})
     /////////////////////////////////////////////////
@@ -51,23 +52,23 @@ const DevicePage = observer(() => {
       // products = JSON.parse(localStorage.getItem("products"));
       // device.products = JSON.parse(localStorage.getItem("products"));
       orderss = JSON.parse(localStorage.getItem("products"));
+      // orders = JSON.parse(localStorage.getItem("products"));
       console.log("orders777777");
     }
     //  cart.setOrders(orders) = JSON.parse(localStorage.getItem("products"));
     // device.cart.push({
     // cart.orders.push({
     // orderss= JSON.parse(localStorage.getItem("products"));
-    console.log("orderess", orderss);
-    // orderss.push({
-    //   id: product.id,
-    //   name: product.name,
-    //   rating: product.rating,
-    //   img: product.img,
-    //   price:product.price,
-    //   quantity:1
-    // });
-    // orderss=order
-    // orderss={
+    console.log("orderss", orderss);
+    console.log("product", product);
+    orders.push({
+      id: product.id,
+      name: product.name,
+      rating: product.rating,
+      img: product.img,
+      price:product.price,
+      quantity:1
+    });
     orderss.push({
       // OrderTotal:45.59,
       // CartDataCreationTime:"1721449637347",
@@ -97,16 +98,8 @@ const DevicePage = observer(() => {
     // order.push({...orderss})
     console.log("order", order);
     console.log("orderessttt", orderss);
-    // localStorage.setItem("products", JSON.stringify(device.cart));
-    // localStorage.setItem("products", JSON.stringify(product));
-    // localStorage.setItem("products", JSON.stringify(cart.orders));
-    // localStorage.setItem("products", JSON.stringify( orderss));
     localStorage.setItem("products", JSON.stringify(orderss));
-
     navigate(SHOP_ROUTER);
-    // window.location.reload(false);
-    // return device.cart;
-    // return cart.orders;
     return orders;
   };
   // fetchOneDevice(id).then(data => setDevice(data)) },[id]);

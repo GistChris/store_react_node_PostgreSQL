@@ -101,6 +101,7 @@ import { makeAutoObservable } from "mobx";
     this._quantityCartItems=0
     makeAutoObservable(this);
   }
+  //Actions - functions change state
   setQuantityCartItems(quantityCartItems){
     this._quantityCartItems = quantityCartItems;
   }
@@ -120,6 +121,7 @@ import { makeAutoObservable } from "mobx";
     this._brands = brands;
   }
   setDevices(devices) {
+    // this._devices = devices;
     this._devices = devices;
   }
   setInfos(infos) {
@@ -139,6 +141,7 @@ import { makeAutoObservable } from "mobx";
   setTotalCount(count) {
     this._totalCount = count;
   }
+  //compiuted functions vyzyvaiutsia esli peremennaia byla izmenena
   get quantityCartItems() {
     return this._quantityCartItems;
   }

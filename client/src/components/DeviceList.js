@@ -1,16 +1,36 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../index";
 import { Row } from "react-bootstrap";
 import DeviceItem from "./DeviceItem";
+import { fetchDevices } from "../http/deviceApi";
 const DeviceList = observer(() => {
   const { device } = useContext(Context);
- 
+  useEffect(() => {
+    fetchDevices(
+      // (device.selectedType.id = null),
+      // (device.selectedBrand.id = null),
+      (device.selectedType.id ),
+      (device.selectedBrand.id ),
+      device.page,
+      7,
+      (device.name = "k")
+    ).then((data) => {
+      device.setDevices(data.rows);
+      device.setTotalCount(data.count);
+    });
+  }, [device.page, device.selectedType, device.selectedBrand, device]);
+  console.log("DEVICEDeviceList", device.devices);
+
   return (
     <Row className="d-flex">
-      {device.devices.map((device) => (
-        <DeviceItem key={device.id} device={device}></DeviceItem>
-      ))}
+      {/* {device.devices.map((device) => ( */}
+      {device.devices
+        .slice()
+        .sort((a, b) => a.id - b.id)
+        .map((device) => (
+          <DeviceItem key={device.id} device={device}></DeviceItem>
+        ))}
     </Row>
   );
 });

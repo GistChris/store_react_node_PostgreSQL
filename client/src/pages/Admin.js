@@ -67,7 +67,7 @@ const Admin = observer(() => {
 
   return (
     <Container className="d-flex flex-column">
-     < h1>Bonjour{token.email}</h1>
+     < h1>Hello {token.email}!</h1>
       <Button
         variant={"outline-dark"}
         className="mt-4 p-2"

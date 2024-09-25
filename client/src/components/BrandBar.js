@@ -5,7 +5,7 @@ import { Card, Row,Col } from "react-bootstrap";
 import DeviceItem from "./DeviceItem";
 const BrandBar = observer(() => {
   const { device } = useContext(Context);
-  // console.log("DEVICE",device)
+  console.log("DEVICEBrandBar ",device.brands)
   return (
     <Col className="d-flex ">
       {device.brands.map((brand) => (

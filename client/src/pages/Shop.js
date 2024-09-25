@@ -11,12 +11,13 @@ import DeviceList from "../components/DeviceList";
 import Search from "../components/Search";
 import { observer } from "mobx-react-lite";
 import { Context } from "../index";
-
 // import { useParams } from "react-router-dom";
 import { fetchTypes, fetchBrands, fetchDevices,deleteDevice,fetchInfos } from "../http/deviceApi";
 import Pages from "../components/Pages";
+// observer chto by mobx otslezhival vse izmenenia
 const Shop = observer(() => {
   const { device } = useContext(Context);
+ 
   // hook useEffect esli massiv zavisimostei pust .. ,[] to podgruzhaet stranitsiu odin raz
   //chtoby meniat stranitsu
   //v massiv vtorym parametrom }, [device.page, ] peredaem device.page
@@ -36,8 +37,9 @@ const Shop = observer(() => {
       device.setDevices(data.rows);
       device.setTotalCount(data.count);
     });
+    // }, []);
+  // }, [device]);
   }, [device.page, device.selectedType, device.selectedBrand,device]);
-  console.log("Device(device)",device)
   return (
     <Container>
   <Search></Search>

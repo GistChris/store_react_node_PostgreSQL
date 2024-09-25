@@ -7,7 +7,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 // import { Dropdown, Row, Col } from "react-bootstrap";
 import { Context } from "../../index";
-import { fetchTypes, fetchBrands } from "../../http/deviceApi";
+// import { fetchTypes, fetchBrands, fetchDevices,deleteDevice,fetchInfos } from "../http/deviceApi";
+import { fetchTypes, fetchBrands, fetchDevices } from "../../http/deviceApi";
 import { observer } from "mobx-react-lite";
 import { createDevice } from "../../http/deviceApi";
 import Image from "react-bootstrap/Image";
@@ -16,18 +17,21 @@ const CreateDevice = observer(({ show, onHide }) => {
   // const CreateDevice = ({ show, onHide }) => {
   // const [product, setProduct] = useState({ info: [] });
   const { device } = useContext(Context);
-
-  // const [name, setName] = useState(" ");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(" ");
+  const [showImage, setShowImage] = useState(false);
+  // currentAvatar
+  let [currentAvatar, setCurrentAvatar] = useState("");
   const [price, setPrice] = useState(0);
   const [file, setFile] = useState(null);
   //massive kharakteristik
   const [info, setInfo] = useState([]);
+  const addFile = React.useRef(" ");
   //useEffect dlia zagruzki s DB
   useEffect(() => {
     fetchTypes().then((data) => device.setTypes(data));
     fetchBrands().then((data) => device.setBrands(data));
-  }, []);
+  // }, [device]);
+}, []);
   const addInfo = () => {
     setInfo([...info, { title: "", description: "", number: Date.now() }]);
   };
@@ -46,19 +50,64 @@ const CreateDevice = observer(({ show, onHide }) => {
       info.map((i) => (i.number === number ? { ...i, [key]: value } : i))
     );
   };
+  // const submitMedia = async () => {
+  //   state.taskMediaUrl = addFile.value;
+  // };
+  // const addFile = ref("");
 
+ 
+  // {
+  //   /* <someElement ref={myRef} /> */
+  // }
+  function onFileMediaChanged(e) {
+    // const input = event.target ;
+    const input = e.target;
+    const file = input?.files?.[0];
+    // if (file && file.type.startsWith("video/")) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      addFile.value = e.target?.result;
+      currentAvatar = setCurrentAvatar(addFile.value);
+      // submitMedia();
+    };
+    console.log("file",file)
+    console.log("addFile.value",addFile.value)
+    reader.readAsDataURL(file);
+    // reader.readAsDataURL(addFile.value);
+  }
+  // if (file && file.type.startsWith("image/")) {
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => {
+  //     addFile.value = e.target?.result as string;
+  //     submitMedia();
+  //   };
+  //   reader.readAsDataURL(file);
+  // }
+  // }
   const selectFile = (e) => {
-    // /console.log(e.target.files);
+    const input = e.target;
+    const file = input?.files?.[0];
+    setShowImage(true);
     setFile(e.target.files[0]);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      addFile.value = e.target?.result;
+      currentAvatar = setCurrentAvatar(addFile.value);
+      // submitMedia();
+    };
+    reader.readAsDataURL(file);
   };
-
+const clearForm=()=>{
+  setName(" ");
+  setPrice(0);
+  setFile(null);
+  setInfo([]);
+  device.selectedType.name=null;
+  device.selectedBrand.name=null;
+  addFile.value=null;
+  setShowImage(false)
+}
   const addDevice = () => {
-    // console.log("name", name);
-    // console.log("price", `${price}`);
-    // console.log("img", file);
-    // console.log("brandId", device.selectedBrand.id);
-    // console.log("typeId", device.selectedType.id);
-    // console.log("info", info);
     //ispolzuem ne stroku v formate json, a ispolzuem formData
     const formData = new FormData();
     // formData.append("name", name);
@@ -75,7 +124,7 @@ const CreateDevice = observer(({ show, onHide }) => {
     //JSON.stringify(info) v stroku libo BLOb'
     // console.log("info", info)
     formData.append("info", JSON.stringify(info));
-     console.log("name", name);
+    console.log("name", name);
     console.log("price", `${price}`);
     console.log("img", file);
     console.log("brandId", device.selectedBrand.id);
@@ -84,14 +133,20 @@ const CreateDevice = observer(({ show, onHide }) => {
     //a na servere json stroka budet parsitsia obratno v massiv
     //esli zapros proshel uspeshno zakryvaem modalnoe pkno
     createDevice(formData).then((data) => {
-      setName(' ');
-      setPrice(0);
-      setFile(null);
-      setInfo([]);
+      device.selectedBrand.id=null
+      device.selectedType.id=null
+      clearForm();
       onHide();
     });
     // console.log("formData",formData)
     // console.log(77777777)
+
+    // function showFile(input) {
+    //   let file = input.files[0];
+
+    //   alert(`File name: ${file.name}`); // например, my.png
+    //   alert(`Last modified: ${file.lastModified}`); // например, 1552830408824
+    // }
   };
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
@@ -140,16 +195,13 @@ const CreateDevice = observer(({ show, onHide }) => {
             id="deviceName"
             type="text"
             placeholder="Enter device name"
+            // value={name || "Choose name"}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <Image
-            width={300}
-            height={300}
-            // src={process.env.REACT_APP_API_URL + product.img}
-            // product.img 06025b3a-2267-450a-9991-e5ae4b98b1e8.jpg
-            src={process.env.REACT_APP_API_URL + file}
-          />
+          {showImage ? (
+            <Image width={300} height={300} src={addFile.value} />
+          ) : null}
           <Form.Label className="mt-3" htmlFor="devicePrice">
             Enter price
           </Form.Label>
@@ -160,6 +212,7 @@ const CreateDevice = observer(({ show, onHide }) => {
             onChange={(e) => setPrice(Number(e.target.value))}
             placeholder="Enter price"
           />
+          {/*<input type="file" onchange="showFile(this)"> */}
           <Form.Control className="mt-3" type="file" onChange={selectFile} />
           <hr />
           <Button variant={"outline-dark"} onClick={addInfo}>
@@ -204,6 +257,9 @@ const CreateDevice = observer(({ show, onHide }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
+      <Button variant="outline-success" onClick={clearForm}>
+          Clean
+        </Button>
         <Button variant="outline-danger" onClick={onHide}>
           Close
         </Button>
