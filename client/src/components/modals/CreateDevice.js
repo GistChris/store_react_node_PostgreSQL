@@ -19,11 +19,9 @@ const CreateDevice = observer(({ show, onHide }) => {
   const { device } = useContext(Context);
   const [name, setName] = useState(" ");
   const [showImage, setShowImage] = useState(false);
-  // currentAvatar
   let [currentAvatar, setCurrentAvatar] = useState("");
   const [price, setPrice] = useState(0);
   const [file, setFile] = useState(null);
-  //massive kharakteristik
   const [info, setInfo] = useState([]);
   const addFile = React.useRef(" ");
   //useEffect dlia zagruzki s DB
@@ -108,28 +106,19 @@ const clearForm=()=>{
   setShowImage(false)
 }
   const addDevice = () => {
-    //ispolzuem ne stroku v formate json, a ispolzuem formData
     const formData = new FormData();
-    // formData.append("name", name);
-    //BLOB - nabor bitov
-    //znachenie dolzhno byt libo string libo blob - nabor bitov
-    //v dannom sluchae mozhem otpravliat file
-    //poetomy price converted in string
     formData.append("name", name);
     formData.append("price", `${price}`);
     formData.append("img", file);
     formData.append("brandId", device.selectedBrand.id);
     formData.append("typeId", device.selectedType.id);
-    //nevozmozhno peredat obiect na backend ,poetomy massiv peregoniaem s pomotshiu
-    //JSON.stringify(info) v stroku libo BLOb'
-    // console.log("info", info)
     formData.append("info", JSON.stringify(info));
-    console.log("name", name);
-    console.log("price", `${price}`);
-    console.log("img", file);
-    console.log("brandId", device.selectedBrand.id);
-    console.log("typeId", device.selectedType.id);
-    console.log("info", info);
+    // console.log("name", name);
+    // console.log("price", `${price}`);
+    // console.log("img", file);
+    // console.log("brandId", device.selectedBrand.id);
+    // console.log("typeId", device.selectedType.id);
+    // console.log("info", info);
     //a na servere json stroka budet parsitsia obratno v massiv
     //esli zapros proshel uspeshno zakryvaem modalnoe pkno
     createDevice(formData).then((data) => {

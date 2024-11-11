@@ -69,20 +69,8 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
       //nomer ne sovpadaet my vozratshaem obect ne izmenennym
       info.map((i) => (i.number === number ? { ...i, [key]: value } : i))
     );
-    console.log(" Inf))))", info);
   };
-  // setNewInfo([...product.info]);
-  // const changeNewInfo = (key, value, number) => {
   const changeNewInfo = (key, value, id) => {
-    console.log("value", value);
-    console.log("KEY", key);
-    console.log("ID", id);
-    // setNewInfo([...newInfo, { title: "", description: "", number: Date.now() }]);
-    // setNewInfo([...newInfo]);
-    // setNewInfo([...product.info]);
-    // key eto libo title libo description, number- nomer kharakteristiki
-    //  po kotoroi znachenie budem izmeniat
-    // setNewInfo([...product.info]);
     setNewInfo(
       newInfo.map((i) => (i.id === id ? { ...i, [key]: value } : i))
       // product.info.map((i) => (i.id === id ? { ...i, [key]: value } : i))
@@ -119,49 +107,12 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
     setShowImage(false);
   };
   const revampDevice = () => {
-    console.log("newInfo", newInfo);
-    console.log("Info", info);
-    // console.log("product", product);
-    console.log("product.name", product.name);
-    console.log("name", name);
-    console.log("product.price", product.price);
-    console.log("price", `${price}`);
-    console.log("product.img", product.img);
-    console.log("file", file);
-    console.log("product.brandId", product.brandId);
-    console.log("brand.id", brand.id);
-    console.log("product.typeId", product.typeId);
-    console.log("type.id", type.id);
-    console.log("deviceId", product.id);
-    // console.log("product.price", product.price);
-    // console.log("product.img", product.img);
-    // console.log("product.brandId", product.brandId);
-    // console.log("product.typeId", product.typeId);
-    // console.log("deviceId", product.id);
     const formData = new FormData();
-
     //BLOB - nabor bitov
     //znachenie dolzhno byt libo string libo blob - nabor bitov
-    //v dannom sluchae mozhem otpravliat file
-    //poetomy price converted in string
-    // {showTypes ? "hide types" :"show types"}
-
-    // formData.append("name", name || product.name);
-    // formData.append("price", `${price}` || product.price);
-    // formData.append("img", file || product.img);
-    // formData.append("brandId", brand.id || product.brandId);
-    // formData.append("typeId", type.id || product.typeId);
-    // formData.append("deviceId", product.id);
-    // formData.append("price", `${price}`);
-    // formData.append("img", file);
-    // formData.append("brandId", brand.id);
-    // formData.append("typeId", type.id);
-    // formData.append("deviceId", product.id);
     //nevozmozhno peredat obiect na backend ,poetomy massiv peregoniaem s pomotshiu
     //JSON.stringify(info) v stroku libo BLOb'
-    ////////////////////////////////////////////////////
     if (name) {
-      // console.log("ITEM NAME EXIST");
       formData.append("name", name);
     } else {
       console.log("ITEM NAME EXIST");
@@ -184,37 +135,12 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
     if (file) {
       formData.append("img", file);
     } else {
-      // console.log("product.img",product.img)
       formData.append("img", product.img);
     }
-    // formData.append("name","name" ? product.name : name);
-    // formData.append("price", "price" ? product.price : `${price}`);
-    // console.log("FFFIILLEEE",file)
-    // formData.append("img", file);
-    // formData.append("brandId", "brandId" ? product.brandId : brand.id);
-    // formData.append("typeId", "typeId" ? product.typeId : type.id);
     formData.append("deviceId", product.id);
     formData.append("info", JSON.stringify(info));
     formData.append("newInfo", JSON.stringify(newInfo));
-    ///////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////
-    // formData.append("name", product.name || name);
-    // formData.append("price", product.price || `${price}`);
-    // formData.append("img", product.img || file);
-    // formData.append("brandId", product.brandId || brand.id);
-    // formData.append("typeId", product.typeId || type.id);
-    // formData.append("deviceId", product.id);
-    // formData.append("info", JSON.stringify(info));
-    // formData.append("newInfo", JSON.stringify(newInfo));
-    ///////////////////////////////////////////////////////
-    //a na servere json stroka budet parsitsia obratno v massiv
-    //esli zapros proshel uspeshno zakryvaem modalnoe pkno
-    // console.log("formData.price",formData.img)
-    // console.log("formData",formData)
     updateDevice(formData).then((data) => {
-      // device.selectedBrand.id=null
-      // device.selectedType.id=null
-      // clearForm();
       fetchDevices(
         device.selectedType.id,
         device.selectedBrand.id,
@@ -227,15 +153,13 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
       });
       onHide();
     });
-    // updateDevice(formData).then((data) => {onHide();navigate(SHOP_ROUTER);});
-    // navigate(SHOP_ROUTER);
   };
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Update device {name}, {product.name}, DeviceId{product.id},{product.typeId},
-          {product.brandId},{product.price}
+          Update device {name}, {product.name}, DeviceId{product.id},
+          {product.typeId},{product.brandId},{product.price}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

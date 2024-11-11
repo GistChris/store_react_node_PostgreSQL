@@ -93,15 +93,15 @@
 }
 $oval-background:#dc3d3d;
 .cart{
-    float:right;
+    // float:right;
     cursor:pointer;
     transition: color 500ms ease;
     font-size: large;
     display:flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
-    width: 50px;
+    height: max-content;
+    width: max-content;
     border-radius: 50%;
     background-color:$oval-background;
   

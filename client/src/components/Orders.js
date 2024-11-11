@@ -8,11 +8,11 @@ import { deleteDevice } from "../http/deviceApi";
 // import { createDevice } from "../../http/deviceApi";
 //hook useHistory dlia pereckliuchenia mezhdu staranitsami
 import { useNavigate } from "react-router-dom";
-import { DEVICE_ROUTER } from "../utils/consts";
+import { ORDER_ROUTER } from "../utils/consts";
 import { observer } from "mobx-react-lite";
 
-const DeviceItem = ({ device }) => {
-  console.log("DeviceItem",device );
+const Order = ({ order }) => {
+  console.log("Order",order );
   const navigate = useNavigate();
   const [deviceVisible, setDeviceVisible] = useState(false);
   const removeItem = (itemId) => {
@@ -28,26 +28,29 @@ const DeviceItem = ({ device }) => {
       <Col
         md={3}
         className={"mt-3"}
-        onClick={() => navigate(DEVICE_ROUTER + "/" + device.id)}
+        onClick={() => navigate(ORDER_ROUTER + "/" + order.id)}
+        // onClick={() => navigate(DEVICE_ROUTER + "/" + device.id)}
       >
         <Card style={{ width: 150, cursor: "pointer" }} border={"light"}>
           {/* <Image width={150} Heght={150} src={device.img} /> */}
           {/* // url server process.env.REACT_APP_API_URL */}
-          <Image
+          {/* <Image
             width={150}
             heighteght={150}
             src={process.env.REACT_APP_API_URL + device.img}
-          />
+          /> */}
           <div className="text-black-50 mt-1 d-flex justify-content-between align-items-center">
-            {/* <div>Samsung...</div> */}
-            <div className="d-flex align-items-center">
-              <h2>device.idddddd:{device.id}</h2>
+            <h2>Id:{order.id}</h2>
+            <h2>orderUserId:{order.userId}</h2>
+            <h2>orderTotal:{order.total}</h2>
+            {/* <div className="d-flex align-items-center">
+              <h2>device.id:{device.id}</h2>
               <div>{device.rating}</div>
               <div>device.info:{device.info}</div>
               <Image width={8} height={8} src={star} />
-            </div>
+            </div> */}
           </div>
-          <div>{device.name}</div>
+          {/* <div>{device.name}</div> */}
           {/* {token.role === "ADMIN" ? <p 
         className="remove"
         // onClick={() => logOut()}
@@ -62,7 +65,7 @@ const DeviceItem = ({ device }) => {
         onClick={() =>  removeItem(device)}
         >remove</p> : null} */}
       </Col>
-      {token.role === "ADMIN" ? (
+      {/* {token.role === "ADMIN" ? (
         <p
           className="remove"
           // onClick={() => logOut()}
@@ -71,8 +74,8 @@ const DeviceItem = ({ device }) => {
         >
           remove
         </p>
-      ) : null}
-      {token.role === "ADMIN" ? (
+      ) : null} */}
+      {/* {token.role === "ADMIN" ? (
         <p
           className="remove"
           // onClick={() => logOut()}
@@ -82,7 +85,7 @@ const DeviceItem = ({ device }) => {
         >
           update
         </p>
-      ) : null}
+      ) : null} */}
       {/* <Button
         variant={"outline-dark"}
         className="mt-4 p-2"
@@ -91,13 +94,13 @@ const DeviceItem = ({ device }) => {
         Add item
       </Button> */}
       {/* <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)} /> */}
-      <UpdateDevice
+      {/* <UpdateDevice
         show={deviceVisible}
         onHide={() => setDeviceVisible(false)}
         id={device.id}
-      />
+      /> */}
     </div>
   );
 };
 
-export default DeviceItem;
+export default Order;

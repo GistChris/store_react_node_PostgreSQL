@@ -1,56 +1,87 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../index";
 import CartSigne from "./CartSign";
 import Navbar from "react-bootstrap/Navbar";
-import { jwtDecode } from "jwt-decode";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
+import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+import UserBar from "../components/UserBar";
+import Profile from "../components/modals/Profile";
+import CreateRating from "../components/modals/Profile";
 import { NavLink } from "react-router-dom";
-import { ADMIN_ROUTER,LOGIN_ROUTER, SHOP_ROUTER } from "../utils/consts";
-// import { observer } from "mobx-react-light";
+import ListGroup from "react-bootstrap/ListGroup";
+import {
+  ADMIN_ROUTER,
+  LOGIN_ROUTER,
+  SHOP_ROUTER,
+  SOLD_ROUTER,
+  PROFILE_ROUTER,
+} from "../utils/consts";
 import { observer } from "mobx-react";
 import { useNavigate } from "react-router-dom";
-const token=jwtDecode(  localStorage.getItem('token'))
-console.log("ROLE",token.role)
-//observer dlia pererendinga v rezhime realnogo vremeni
+import { values } from "mobx";
+import { Dropdown, DropdownItem } from "react-bootstrap";
 const NavBar = observer(() => {
-  // let [cartOpen,setCartOpen]=useState(false)
-  // const NavBar =() => {
   const { user } = useContext(Context);
-  // const {orders}= useContext(Context);
+  const [profileVisible, setProfileVisible] = useState(false);
+  let [value, setValue] = useState(" ");
+  const [showActions, setShowActions] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {}, []);
   const logOut = () => {
-    console.log("addItem");
-    //pererenderivaetsia tolko navbar
+    localStorage.clear();
     user.setUser({});
     user.setIsAuth(false);
   };
   return (
     <Navbar bg="dark" variant="dark" className="navbar">
       <Container>
-        <NavLink  className="shop-link"  to={SHOP_ROUTER}>
+        <Dropdown>
+          <Dropdown.Toggle variant="outline-light" id="dropdown-basic">
+            Your Flagman
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={() => navigate(SHOP_ROUTER)}>
+              Account setting
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(PROFILE_ROUTER)}>
+              Profile
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => navigate(SOLD_ROUTER)}>
+              Orders
+            </Dropdown.Item>
+            <Dropdown.Item>Recently viewed</Dropdown.Item>
+            <Dropdown.Item>Watch List</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+        <NavLink className="shop-link" to={SHOP_ROUTER}>
           FLAGMAN
         </NavLink>
-      
-   <CartSigne className="ml-7"></CartSigne>
+        <CartSigne className="ml-7"></CartSigne>
+        {/* {user.isAuth===true ? ( */}
         {user.isAuth ? (
           <Nav className="ml-auto gap-4" style={{ color: "white" }}>
-            {token.role==="ADMIN" ? (<Button
-              variant={"outline-light"}
-              onClick={() => navigate(ADMIN_ROUTER)}
-            >
-              Admin panel
-            </Button>) : (null)}
+            {user.User.role === "ADMIN" ? (
+              <Button
+                variant={"outline-light"}
+                onClick={() => navigate(ADMIN_ROUTER)}
+              >
+                Admin panel
+              </Button>
+            ) : null}
             <Button
               variant={"outline-light"}
-              onClick={() => logOut()}
+              onClick={() => {
+                // navigate(SHOP_ROUTER);
+                logOut();
+              }}
               className="ml-2"
             >
               Exit
             </Button>
-        
           </Nav>
         ) : (
           <Nav className="ml-auto" style={{ color: "white" }}>
@@ -64,63 +95,12 @@ const NavBar = observer(() => {
           </Nav>
         )}
       </Container>
-  
-    </Navbar>
 
-  
-    //     <Navbar bg="dark" data-bs-theme="dark">
-    //     <Container>
-    //       <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-    //       <Nav className="me-auto">
-    //         <Nav.Link href="#home">Home</Nav.Link>
-    //         <Nav.Link href="#features">Features</Nav.Link>
-    //         <Nav.Link href="#pricing">Pricing</Nav.Link>
-    //       </Nav>
-    //       <Form inline>
-    //      <InputGroup>
-    //          <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-    //          <Form.Control
-    //            placeholder="Username"
-    //            aria-label="Username"
-    //            aria-describedby="basic-addon1"
-    //          />
-    //        </InputGroup>
-    //      </Form>
-    //     </Container>
-    //   </Navbar>
-    //     <Navbar className="bg-body-tertiary justify-content-between">
-    //     <Form inline>
-    //       <InputGroup>
-    //         <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-    //         <Form.Control
-    //           placeholder="Username"
-    //           aria-label="Username"
-    //           aria-describedby="basic-addon1"
-    //         />
-    //       </InputGroup>
-    //     </Form>
-    //     <Form inline>
-    //       <Row>
-    //         <Col xs="auto">
-    //           <Form.Control
-    //             type="text"
-    //             placeholder="Search"
-    //             className=" mr-sm-2"
-    //           />
-    //         </Col>
-    //         <Col xs="auto">
-    //           <Button type="submit">Submit</Button>
-    //         </Col>
-    //       </Row>
-    //     </Form>
-    //   </Navbar>
+      {/* <h1 show={profileVisible} onHide={() => setProfileVisible(false)} style={{ color: "white" }}>TT</h1> */}
+      <Profile show={profileVisible} onHide={() => setProfileVisible(false)} />
+      {/* <Profile/> */}
+    </Navbar>
   );
-  // };
-  // <style>
-  //     .cart {
-  //       color:white;
-  //     }
-  // </style>
 });
 
 export default NavBar;

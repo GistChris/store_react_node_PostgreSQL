@@ -35,6 +35,7 @@ export const fetchRatings = async () => {
   return data;
 };
 export const itemToCart = async (item) => {
+  console.log("itemToCart")
   const { data } = await $authHost.post("api/cart", item);
   return data;
 };
@@ -44,7 +45,6 @@ export const itemToCart = async (item) => {
 //   return data
 // }
 export const createDevice = async (device) => {
-  console.log("device",device.name)
   const { data } = await $authHost.post("api/device", device);
   return data;
 };
@@ -56,8 +56,6 @@ export const updateDevice = async (device) => {
   return data;
 };
 export const deleteDevice = async (itemId) => {
-  // const navigate = useNavigate();
-  // navigate(DEVICE_ROUTER + "/")
   console.log("deletedevice",itemId)
   const deviceId = itemId;
   const { data } = await $authHost.delete("api/device?id=" + deviceId);
@@ -79,7 +77,7 @@ export const fetchDevices = async (typeId, brandId, page, limit = 7) => {
       limit,
     },
   });
-console.log("DATAROW",data.rows)
+// console.log("DATAROW",data.rows)
   return data;
 };
 export const fetchAllDevices = async (typeId, brandId, page, limit ) => {
@@ -92,7 +90,7 @@ export const fetchAllDevices = async (typeId, brandId, page, limit ) => {
       limit,
     },
   });
-  console.log("DATAROW",data.rows)
+  // console.log("DATAROW",data.rows)
   return data;
 };
 

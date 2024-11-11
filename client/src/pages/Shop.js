@@ -12,20 +12,29 @@ import Search from "../components/Search";
 import { observer } from "mobx-react-lite";
 import { Context } from "../index";
 // import { useParams } from "react-router-dom";
+import { fetchCart} from "../http/cartApi";
 import { fetchTypes, fetchBrands, fetchDevices,deleteDevice,fetchInfos } from "../http/deviceApi";
 import Pages from "../components/Pages";
 // observer chto by mobx otslezhival vse izmenenia
 const Shop = observer(() => {
-  const { device } = useContext(Context);
- 
+  const { device,user } = useContext(Context);
   // hook useEffect esli massiv zavisimostei pust .. ,[] to podgruzhaet stranitsiu odin raz
   //chtoby meniat stranitsu
   //v massiv vtorym parametrom }, [device.page, ] peredaem device.page
   //eto znachitchto pri kazhdom vybore tekutshei stranitsty 
   //device.page vyzyvaetsia function fetch Devices
   useEffect(() => { 
+    fetchCart(user.User.id).then((data) => {
+      device.setCart(data);
+      console.log("fetchCartDATA", data);
+    });
+ 
     // fetchInfos().then((data) => device.setInfos(data));
-    fetchTypes().then((data) => device.setTypes(data));
+    // device.setCart(JSON.parse(localStorage.getItem("products")));
+    fetchTypes().then((data) =>{console.log("type",data);device.setTypes(data)} );
+ 
+    // fetchCart().then((data) => device.setCart(data));
+
     fetchBrands().then((data) => device.setBrands(data));
     fetchDevices(
       device.selectedType.id,
@@ -39,7 +48,7 @@ const Shop = observer(() => {
     });
     // }, []);
   // }, [device]);
-  }, [device.page, device.selectedType, device.selectedBrand,device]);
+  }, [device.page, device.selectedType, device.selectedBrand,device,]);
   return (
     <Container>
   <Search></Search>

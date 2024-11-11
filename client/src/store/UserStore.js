@@ -8,7 +8,7 @@ export default class UserStore {
     // что они предназначены только для внутреннего использования
     // и не предназначены для использования извне объекта или функции.
     // При использовании определенного подхода к написанию кода это возможно.
-    //  В javascript — если делать публичные методы класса на замыканиях, 
+    //  В javascript — если делать публичные методы класса на замыканиях,
     // то для приватных объявлять локальные переменные в теле конструктора.
     //  И кажется, это достаточно распространненая практика в ES 5
     // this._isAuth=true;
@@ -27,7 +27,6 @@ export default class UserStore {
   setUser(user) {
     this._user = user;
   }
-  //compiuted functions vyzyvaiutsia esli peremennaia kotoraia byla vnutri byla izmenena
   get isAuth() {
     return this._isAuth;
   }

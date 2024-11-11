@@ -21,7 +21,7 @@ const Search = () => {
   useEffect(() => {
     getItems();
   }, []);
-  console.log("ITEMSSSS",items.rows)
+  // console.log("ITEMSSSS",items.rows)
 //   const filteredItems = items.filter((item) => {
 //     return item.name.toLowerCase().includes(search.toLowerCase());
 //   });

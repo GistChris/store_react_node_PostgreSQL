@@ -4,14 +4,20 @@ export const itemToCart = async (item) => {
   return data;
 };
 
-export const fetchCart = async (userId) => {
-  // console.log("fetchCartuserId", userId);
-  const { data } = await $host.get("api/cart", { params: { userId } });
+export const fetchOrders = async (userId) => {
+ 
+  const { data } = await $host.get("api/order", { params: { userId } });
+  console.log("fetchOrdersuserId", userId);
   return data;
 };
-export const emptyCart = async (userId) => {
-  console.log("emptyCartuserId", userId);
-  const { data } = await $host.delete("api/cart",{ params: { userId } });
+export const fetchOneOrder = async (id) => {
+  console.log("fetchOneOrder");
+  console.log("fetchOrderId", id);
+  const { data } = await $host.get("api/order/" + id);
+  return data;
+};
+export const emptyCart = async () => {
+  const { data } = await $host.delete("api/cart");
   return data;
 };
 export const updateCartItem = async (cartItem) => {
@@ -33,11 +39,14 @@ export const deleteCartProduct = async (itemId) => {
 //   return data;
 // };
 export const addToCart = async (product) => {
+  console.log("addToCart");
+  console.log("addToCartproduct",product);
   const { data } = await $authHost.post("api/cart", product);
   return data;
 };
 
 export const createOrder = async (order) => {
-  const { data } = await $authHost.post("api/order", order);
+  // console.log("order.userId",order)
+  const { data } = await $authHost.post("api/basket", order);
   return data;
 };

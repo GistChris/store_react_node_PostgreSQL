@@ -5,7 +5,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Context } from "../index";
 // import device from "../store/DeviceStore";
 // observer chto by mobx otslezhival vse izmenenia
-const TypeBar = observer(() => {
+const UserBar = observer(() => {
   const { device } = useContext(Context);
   return (
     <ListGroup>
@@ -23,4 +23,4 @@ const TypeBar = observer(() => {
   );
 });
 
-export default TypeBar;
+export default UserBar;

@@ -4,116 +4,45 @@ import Card from "react-bootstrap/Card";
 import bigStar from "../assets/bigStar.png";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
-//nook useParams dlia poiska id na servere useParams
 import { useParams } from "react-router-dom";
 import { fetchOneDevice } from "../http/deviceApi";
-import { itemToCart } from "../http/cartApi";
+import { addToCart, fetchCart } from "../http/cartApi";
 import { useNavigate } from "react-router-dom";
-// import { DEVICE_ROUTER } from "../utils/consts";UPDATE_DEVICE_ROUTER
-import { UPDATE_DEVICE_ROUTER, SHOP_ROUTER } from "../utils/consts";
+import { SHOP_ROUTER } from "../utils/consts";
 import CreateRating from "../components/modals/CreateRating";
 import { Context } from "../index";
 import { observer } from "mobx-react-lite";
 const DevicePage = observer(() => {
-  const { device, orders, cart } = useContext(Context);
-
+  const { device,user } = useContext(Context);
   const navigate = useNavigate();
-  //useState dlia sozdania localnogo sostoiania
-  // const [device, setDevice] = useState({ info: [] });
   const [product, setProduct] = useState({ info: [] });
-  // const [cart, setCart] = useState([]);
-  // const [device, setDevice] = useState({});
   const [ratingVisible, setRatingVisible] = useState(false);
-  const [updateVisible, setUpdateVisible] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
-  // let  orderss={}
-  let orderss = [];
-  let order = [];
-  //id iz paramentrov stroki
-  // console.log("params.id", id);
-  //useEffect pri otkrytii stranitsy kazhdyi raz edinozhdy dolzhny podgrouzhat
   useEffect(() => {
     fetchOneDevice(id).then((data) => setProduct(data));
-    // console.log("USEEFFECTdevice",device.info[0].id)
   }, []);
-  // let cart=[];
-  // const card = cart.setCart(device);
-  // console.log("addItem");
-  // console.log("DEVICE", device);
-  // // cart.push(device)
-  // console.log("CARD", card);
-  // console.log("CART", cart.cart);
+  console.log("product",product)
   const addItemToCart = (product) => {
-    console.log("orders777777");
-    // const addItemToCart = (device) => {
-    // this.setState({orders:[...this.state.orders,device]})
-    /////////////////////////////////////////////////
-    if (localStorage.getItem("products")) {
-      // products = JSON.parse(localStorage.getItem("products"));
-      // device.products = JSON.parse(localStorage.getItem("products"));
-      orderss = JSON.parse(localStorage.getItem("products"));
-      // orders = JSON.parse(localStorage.getItem("products"));
-      console.log("orders777777");
-    }
-    //  cart.setOrders(orders) = JSON.parse(localStorage.getItem("products"));
-    // device.cart.push({
-    // cart.orders.push({
-    // orderss= JSON.parse(localStorage.getItem("products"));
-    console.log("orderss", orderss);
-    console.log("product", product);
-    orders.push({
-      id: product.id,
-      name: product.name,
-      rating: product.rating,
-      img: product.img,
-      price:product.price,
-      quantity:1
+    const formData = new FormData();
+    formData.append("userId",user.User.id);
+    formData.append("productId", product.id);
+    formData.append("productName", product.name);
+    formData.append("productPrice", product.price);
+    formData.append("productRating", product.rating);
+    formData.append("productImg", product.img);
+    formData.append("productQuantity", quantity);
+    addToCart(formData).then((data) => {
+      fetchCart(user.User.id).then((data) => {
+        localStorage.setItem("products", JSON.stringify(data));
+        device.setCart(data);
+      });
     });
-    orderss.push({
-      // OrderTotal:45.59,
-      // CartDataCreationTime:"1721449637347",
-      // CartId:"1b549bb8-0fad-431d-b1a4-699cf09a353a",
-      // Currency:"CA$",
-      // Products:[1,2,3]
-      // {"productTitle":"FLOVEME Magnetic Car Phone Holder L Shape Clip Air Vent Mount For Cell Phone GPS","productPrice":6.28,"productUrl":"https://www.ebay.ca/itm/394172140590",
-      // "productImg":"https://i.ebayimg.com/images/g/43UAAOSwOh5i15UM/s-l225.webp",
-      // "productQuantity":1,
-      // "productSeller":"",
-      // "foundInWebAssist":false,
-      // "productBrand":""},
-      // {"productTitle":"Cell Phone Accessories Car Mount Suction Cup Camera Stand Bracket Window Holder","productPrice":6.76,
-      //   "productUrl":"https://www.ebay.ca/itm/315489972189",
-      //   "productImg":"https://i.ebayimg.com/images/g/Lx0AAOSwzBxmf8j3/s-l225.webp",
-      //   "productQuantity":1,"productSeller":"","foundInWebAssist":false,
-      //   "productBrand":""},
-      // {"productTitle":"Universal Gravity Car Holder Mount Air Vent Stand Cradle For Mobile Cell Phone","productPrice":3.16,"productUrl":"https://www.ebay.ca/itm/176347908824","productImg":"https://i.ebayimg.com/ima…
-      order: [1],
-      id: product.id,
-      name: product.name,
-      rating: product.rating,
-      img: product.img,
-      price: product.price,
-      quantity: 1,
-    });
-    // order.push({...orderss})
-    console.log("order", order);
-    console.log("orderessttt", orderss);
-    localStorage.setItem("products", JSON.stringify(orderss));
     navigate(SHOP_ROUTER);
-    return orders;
+    return device.cart;
   };
-  // fetchOneDevice(id).then(data => setDevice(data)) },[id]);
-
   return (
     <Container className="mt-3">
-      <Button
-        value={updateVisible}
-        variant={"outline-dark"}
-        className="mt-4 p-2"
-        onClick={() => navigate(UPDATE_DEVICE_ROUTER + "/" + product.id)}
-      >
-        Update item
-      </Button>
       <Row>
         <Col md={4}>
           <Image
@@ -124,10 +53,9 @@ const DevicePage = observer(() => {
         </Col>
         <Col md={4}>
           <Row className="d-flex flex-column align-items-center">
-            <h2>{product.name}</h2>
-            <h2>{product.id}</h2>
-            {/* <h2>device.info:{device.info[0].id}</h2> */}
-            <h2>{product.typeId}</h2>
+            <h2>product.nameffff{product.name}</h2>
+            <h2>product.id{product.id}</h2>
+            <h2>product.typeId{product.typeId}</h2>
             <div
               className="d-flex align-items-center justify-content-center"
               style={{
@@ -164,10 +92,20 @@ const DevicePage = observer(() => {
             }}
           >
             <h3>From:{product.price} cad.</h3>
+            <h3>
+              Qty
+              <input
+                className="quantity-input"
+                type="number"
+                min="1"
+                value={quantity}
+                placeholder={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+              ></input>
+            </h3>
             <Button
               variant={"outline-dark"}
               onClick={() => addItemToCart(product)}
-              // onClick={() =>cart.setCart(device)}
             >
               Add to Cart
             </Button>
@@ -176,7 +114,6 @@ const DevicePage = observer(() => {
       </Row>
       <Row className="d-flex flex-column m-3">
         <h1>Specifications</h1>
-
         {product.info.map((info, index) => (
           <Row
             key={info.id}
@@ -189,15 +126,8 @@ const DevicePage = observer(() => {
           </Row>
         ))}
         <p className="remove">remove</p>
-        {/* {token.role === "ADMIN" ? <p 
-        className="remove"
-        // onClick={() => logOut()}
-        // onClick={() =>  console.log("REMOVE")}
-        onClick={() =>  removeItem(device)}
-        >remove</p> : null} */}
       </Row>
     </Container>
   );
 });
-
 export default DevicePage;

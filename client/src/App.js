@@ -10,24 +10,20 @@ import  "./App.scss"
 //obernem component App v observer, tak kak nam nyzhno sostoianie user userStore
 const App = observer(() => {
   const { user } = useContext(Context);
-  // console.log("user",user)
-  //delaem localnoe sostoianie loading "idet zagruzka ili net"
   const [loading, setLoading] = useState(true);
-  // console.log("loading1")
-  // ????????????????????????????????
-  //etot zapros tolko odin raz pered zapuskom prilozhenia dlia etogo
-  //ispolzuem hook useEffect, kotoryi imeet functiu i massiv zavisimostei(
-  // esli massiv zavisimostei[] pustoi to functia otrabotaet odin raz pri pervom zapuske)
-
   useEffect(() => {
     // setTimeout(() => {
+      // device.setCart(JSON.parse(localStorage.getItem("products")));
       check()
         .then((data) => {
-          user.setUser(true);
+          // user.setUser(true);
+           user.setUser(data);
           //delaem setLoading(false) i nevazhno proizoshla u nas oshibka ili net
           user.setIsAuth(true);
+          // user.setIsAuth(false);
         })
         .finally(() => setLoading(false));
+        // .finally(() => setLoading(true));
     // }, 1000);
   }, []);
   // }, [user]);

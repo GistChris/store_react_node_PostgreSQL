@@ -13,7 +13,7 @@ import { observer } from "mobx-react-lite";
 // import { Context } from "../index";
 import { Context } from "../index";
 
-const Auth = observer(() => {
+const Profile = observer(() => {
   const { user } = useContext(Context);
   const location = useLocation();
   const navigate = useNavigate();
@@ -93,4 +93,4 @@ const Auth = observer(() => {
   );
 });
 
-export default Auth;
+export default Profile;
