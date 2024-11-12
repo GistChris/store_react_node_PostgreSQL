@@ -15,12 +15,16 @@ const PersonalInfo = ({
   text,
   title,
   data,
-  controlId,
-  label,
-  type,
-  placeholder,
   linkTitle,
-  addInfo
+  addInfo,
+  inputFirstName,
+  inputMiddleName,
+  inputLastName,
+  inputCountry,
+  inputCity,
+  inputRegion,
+  inputStreetAddress,
+  inputPostalCode,
 }) => {
   const { user } = useContext(Context);
   const location = useLocation();
@@ -28,36 +32,6 @@ const PersonalInfo = ({
   // const isLogin = location.pathname === LOGIN_ROUTER;
   const [inputVisible, setInputVisible] = useState(false);
 
-  // console.log("user", user);
-  // const signIn=async()=>{
-  //   const response=await registration()
-  //   console.log("response",response)
-  // }
-
-  // const click = async () => {
-  //   // const response = await registration(email, password);
-  //   // console.log("response", response);
-
-  //   try {
-  //     let data;
-  //     if (isLogin) {
-  //       data = await login(email, password);
-  //       console.log("logindata", data);
-  //     } else {
-  //       data = await registration(email, password);
-  //       console.log("registrationdata", data);
-  //     }
-  //     // console.log("data",data);
-  //     // console.log("data.id",data.id);
-  //     // user.setUserId(data.id)
-  //     user.setUser(data);
-  //     user.setIsAuth(true);
-  //     navigate(SHOP_ROUTER);
-  //   } catch (e) {
-  //     alert(e.response.data.message);
-  //   }
-  // };
-  // console.log(location);
   return (
     <Container
       className="mt-4 d-flex justify-content-center align-items-center"
@@ -76,51 +50,69 @@ const PersonalInfo = ({
           {inputVisible ? (
             <Col md={5}>
               <Form>
-                <Stack gap={3}>
+                <Stack
+                  gap={3}
+                  inputFirstName={inputFirstName}
+                  inputMiddleName={inputMiddleName}
+                  inputLastName={inputLastName}
+                  inputCountry={inputCountry}
+                  inputCity={inputCity}
+                  inputRegion={inputRegion}
+                  inputStreetAddress={inputStreetAddress}
+                  inputPostalCode={inputPostalCode}
+                  
+                >
                   <FloatingLabel
                     controlId="formGridFirstName"
                     label={"First name:" + linkTitle}
                   >
-                    <Form.Control type="text" placeholder="Alexander" />
+                    <Form.Control type="text" onChange={inputFirstName} />
                   </FloatingLabel>
 
                   <FloatingLabel
                     controlId="formGridMiddleName"
                     label="Middle Name"
                   >
-                    <Form.Control type="text" placeholder="Alexander" />
+                    <Form.Control type="text" onChange={inputMiddleName} />
                   </FloatingLabel>
 
                   <FloatingLabel
-                    controlId="formGridFirstName"
+                    controlId="formGridLastName"
                     label={"Last name:" + data}
                   >
-                    <Form.Control type="text" placeholder="Alexander" />
+                    <Form.Control type="text" onChange={inputLastName} />
                   </FloatingLabel>
 
                   {/* <FloatingLabel controlId="formGridLastName" label={label}>
                     <Form.Control type="text" placeholder="Alexander" />
                   </FloatingLabel> */}
 
-                  <Form.Group as={Col} controlId="formGridRegion">
+                  <Form.Group as={Col} controlId="formGridCountry">
                     <Form.Label>Country or region</Form.Label>
-                    <Form.Control type="text" placeholder="Canada" />
+                    <Form.Control type="text" onChange={inputCountry} placeholder="Canada" />
                   </Form.Group>
 
                   <FloatingLabel controlId="formGridCity" label="City">
-                    <Form.Control type="text" placeholder="Montreal" />
+                    <Form.Control type="text" onChange={inputCity}  placeholder="Montreal" />
                   </FloatingLabel>
-                  
+
                   <FloatingLabel
                     controlId="floatingSelect"
                     label="State/Province/Region"
                   >
-                    <Form.Select aria-label="Select">
+                    <Form.Select aria-label="Select" onChange={inputRegion}>
                       <option>-Select Province-</option>
-                      <option value="1">Quebec</option>
-                      <option value="2">Ontario</option>
-                      <option value="3">Manitoba</option>
+                      <option value="Quebec">Quebec</option>
+                      <option value="Ontario">Ontario</option>
+                      <option value="Manitoba">Manitoba</option>
                     </Form.Select>
+                  </FloatingLabel>
+
+                  <FloatingLabel
+                    controlId="formGridStreetAddress"
+                    label="Street Address"
+                  >
+                    <Form.Control type="text" placeholder="Montreal" onChange={inputStreetAddress}/>
                   </FloatingLabel>
 
                   <FloatingLabel
@@ -128,21 +120,23 @@ const PersonalInfo = ({
                     controlId="formGridZip"
                     label="Postal code"
                   >
-                    <Form.Control placeholder="H3V1C2" />
+                    <Form.Control placeholder="H3V1C2" onChange={inputPostalCode} />
                   </FloatingLabel>
-                  <Col className=" d-flex justify-content-between">
-                  <Button 
-                    variant={"outline-primary"}
-                    onClick={() => setInputVisible(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant={"outline-secondary"}
-                      // onClick={() => addInfo}
-                  >
-                    Save
-                  </Button></Col>
+
+                  <Col className=" d-flex justify-content-between" addInfo={addInfo}>
+                    <Button
+                      variant={"outline-primary"}
+                      onClick={() => setInputVisible(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant={"outline-secondary"}
+                      onClick={() =>addInfo(setInputVisible(false))}
+                    >
+                      Save
+                    </Button>
+                  </Col>
                   <h5>{text}</h5>
                 </Stack>
               </Form>

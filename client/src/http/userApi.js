@@ -42,5 +42,13 @@ export const check = async () => {
 //   console.log("jwtDecode(data.token).id",jwtDecode(data.token).id)
 //   const user=jwtDecode(data.token)
 //   return user;
-// };
+// };revampPersonalInfo
+export const updateUser = async (user) => {
+  // const { data } = await $authHost.patch("api/device", device);
+  // console.log("UPDATEUSER",user)
+
+  const { data } = await $authHost.put("api/user", user);
+  console.log("dataUPDATEUSER",data)
+  return data;
+};
 
