@@ -1,7 +1,7 @@
 const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { User, Basket } = require("../models/models");
+const { User } = require("../models/models");
 const generateJwt = (id, email, role) => {
   return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
     expiresIn: "24h",
@@ -32,7 +32,7 @@ class UserController {
 
     // console.log("USER",user)
     if (!user) {
-      return next(ApiError.internal("User with this name is not find"));
+      return next(ApiError.internal("User  is not find"));
     }
     console.log("USER EXIST");
     let comparePassword = bcrypt.compareSync(password, user.password);
@@ -41,13 +41,22 @@ class UserController {
       // return res.json({token})
     }
     const token = generateJwt(user.id, user.email, user.role);
+    // console.log("LOGINtoken",res.json({ token }));
     return res.json({ token });
+  }
+  async getUser(req, res, next) {
+   const { userId } = req.query;
+    console.log("userId", userId);
+    const user = await User.findOne({ where: { id:userId } });
+    const token = generateJwt(user.id, user.email, user.role);
+    // return res.json({ token });
+    return res.json(user);
   }
   async check(req, res, next) {
     // console.log("CHECK")
     //  res.json({message:"WORaaaKING"});
     ///funktsia check generiruet novyi token i otpravit token na client////////
-    ///Grubo govoria esli polzovatel budet ispolzovat svoi account token u nego budet perezapisyvatsia//////////
+    ///Grubo govoria esli polzovatel budet ispolzovat svoi account token y nego budet perezapisyvatsia//////////
     const token = generateJwt(req.user.id, req.user.email, req.user.role);
     return res.json({ token });
     /////////////////////////////////
@@ -80,7 +89,7 @@ class UserController {
         postalCode,
         phoneNumber,
       } = req.body;
-console.log("req.body",req.body)
+      console.log("req.body", req.body);
       const user = await User.update(
         {
           email,
@@ -102,6 +111,8 @@ console.log("req.body",req.body)
           },
         }
       );
+      console.log("userUPDATE");
+      // console.log("userUPDATE",res.json(user))
       //posle sozdania device peredaem informatsiu na klienta
       return res.json(user);
     } catch (e) {
