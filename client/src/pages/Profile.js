@@ -12,7 +12,7 @@ import {
   REGISTRATION_ROUTER,
   SHOP_ROUTER,
 } from "../utils/consts";
-import { login, registration } from "../http/userApi";
+import {currentUser, login, registration } from "../http/userApi";
 import { observer } from "mobx-react-lite";
 // import { Context } from "../index";
 import { Context } from "../index";
@@ -31,18 +31,10 @@ const Profile = observer(() => {
   const [streetAddress, setStreetAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+//   user.getUseruser.setUserId(data.id)
+console.log("response", user);
   const revampPersonalInfo = () => {
     const formData = new FormData();
-    console.log("userName", userName);
-    console.log("firstName", firstName);
-    console.log("userName", userName);
-    console.log("middleName", middleName);
-    console.log("lastName", lastName);
-    console.log("country", country);
-    console.log("region", region);
-    console.log("city", city);
-    console.log("streetAddress", streetAddress);
-    console.log("postalCode", postalCode);
     if (user.User.id) {
       formData.append("userId", user.User.id);
     }
@@ -82,44 +74,25 @@ const Profile = observer(() => {
     if (phoneNumber) {
       formData.append("phoneNumber", phoneNumber);
     }
-    // const response = await registration(email, password);
-    // console.log("response", response);
-
     try {
       updateUser(formData).then((data) => {
-        // console.log("data",data)
-        user.setUser(data)
-        // console.log("USERUPDATE",user.User)
-        // device.selectedBrand.id=null
-        // device.selectedType.id=null
-        // clearForm();
-        // onHide();
+        currentUser(user.User.id).then((data)=>{
+            
+            user.setUser(data)
+        });
       });
-      //   let data;
-      //   if (isLogin) {
-      //     data = await login(email, password);
-      //     console.log("logindata",data);
-      //   } else {
-      //      data = await registration(email, password);
-      //     console.log("registrationdata",data);
-      //   }
-      // console.log("data",data);
-      // console.log("data.id",data.id);
-      // user.setUserId(data.id)
-      //   user.setUser(data)
-      //   user.setIsAuth(true)
-      //   navigate(SHOP_ROUTER)
     } catch (e) {
       alert(e.response.data.message);
     }
   };
-  console.log("USERUPDATE",user.User.id)
+  console.log("USERUPDATE",user.User)
+//   console.log("USERUPDATE",user.User.city)
   return (
     <Container
       className="d-flex justify-content-center align-items-center"
     >
       <Stack gap={3}>
-        <h2 className="m-auto">Personal info</h2>
+        <h2 className="m-auto">Personal infoww{user.User.city}</h2>
         <InfoBlock
           title="Username"
           text="If you change your username, you won’t be able to modify it again for 30 days."

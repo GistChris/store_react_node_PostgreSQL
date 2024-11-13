@@ -151,6 +151,7 @@ const UpdateDevice = observer(({ show, onHide, id }) => {
         device.setDevices(data.rows);
         device.setTotalCount(data.count);
       });
+      // console.log("DATADEVICE",data)
       onHide();
     });
   };

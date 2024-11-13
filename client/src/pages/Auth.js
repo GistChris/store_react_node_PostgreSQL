@@ -39,9 +39,7 @@ const Auth = observer(() => {
          data = await registration(email, password);
         console.log("registrationdata",data);
       }
-      // console.log("data",data);
-      // console.log("data.id",data.id);
-      // user.setUserId(data.id)
+      console.log("Authdata",data);
       user.setUser(data)
       user.setIsAuth(true)
       navigate(SHOP_ROUTER)

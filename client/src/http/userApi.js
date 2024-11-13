@@ -35,18 +35,17 @@ export const check = async () => {
   localStorage.setItem('token', data.token);
   return jwtDecode(data.token);
 };
-// export const currentUser = async () => {
-//   const {data} = await $authHost.get("api/user/auth");
-//   console.log("DATAUSERFROMSERVER",data)
-//   // localStorage.setItem('token', data.token);
-//   console.log("jwtDecode(data.token).id",jwtDecode(data.token).id)
-//   const user=jwtDecode(data.token)
-//   return user;
-// };revampPersonalInfo
+export const currentUser = async (userId) => {
+   console.log("userId",userId)
+  const {data} = await $authHost.get("api/user",{params: {userId}});
+  // console.log("NEWUSERdata", data)
+  // console.log("DATAUSERFROMSERVER", console.log("NEWUSERdata", data))
+  // localStorage.setItem('token', data.token);
+  // console.log("jwtDecode(data.token).id",jwtDecode(data.token).id)
+  // const user=jwtDecode(data.token)
+  return data;
+};
 export const updateUser = async (user) => {
-  // const { data } = await $authHost.patch("api/device", device);
-  // console.log("UPDATEUSER",user)
-
   const { data } = await $authHost.put("api/user", user);
   console.log("dataUPDATEUSER",data)
   return data;

@@ -49,9 +49,6 @@ export const createDevice = async (device) => {
   return data;
 };
 export const updateDevice = async (device) => {
-  // const { data } = await $authHost.patch("api/device", device);
-
-
   const { data } = await $authHost.put("api/device", device);
   return data;
 };
